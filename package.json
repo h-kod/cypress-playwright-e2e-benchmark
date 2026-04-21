@@ -1,0 +1,23 @@
+{
+  "name": "cypress-playwright-e2e-benchmark",
+  "version": "1.0.0",
+  "description": "Benchmark project for comparing Cypress and Playwright E2E test performance",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0",
+    "test:playwright": "playwright test",
+    "test:cypress": "node scripts/run-cypress.js"
+  },
+  "keywords": [
+    "cypress",
+    "playwright",
+    "benchmark",
+    "e2e"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "cypress": "^15.14.0"
+  }
+}

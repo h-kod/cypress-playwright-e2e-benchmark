@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>E2E Benchmark Demo App</title>
+  <style>https://news.google.com/search?q=iran%20when%3A1h&hl=tr&gl=TR&ceid=TR%3Atr
+    :root {
+      --bg-1: #08111f;
+      --bg-2: #0d1b2e;
+      --surface: rgba(12, 18, 31, 0.72);
+      --surface-strong: #111a2c;
+      --surface-soft: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --text: #f5f7fb;
+      --muted: #a7b0c0;
+      --accent: #ff7a59;
+      --accent-2: #ff9f43;
+      --accent-hover: #ff6a3d;
+      --success-bg: rgba(34, 197, 94, 0.14);
+      --success-text: #bbf7d0;
+      --error-bg: rgba(239, 68, 68, 0.14);
+      --error-text: #fecaca;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 154, 102, 0.22), transparent 34%),
+        radial-gradient(circle at top right, rgba(86, 132, 255, 0.20), transparent 32%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2) 58%, #0b1324);
+      color: var(--text);
+      min-height: 100vh;
+      letter-spacing: 0.01em;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(7, 13, 24, 0.78);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      padding: 18px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    header > div:first-child {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    header > div:last-child {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    #cart-count {
+      display: inline-grid;
+      place-items: center;
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 0.55rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255, 122, 89, 0.95), rgba(255, 159, 67, 0.95));
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(255, 122, 89, 0.28);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 32px auto 48px;
+      padding: 0 20px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+      backdrop-filter: blur(20px);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), transparent 38%);
+      pointer-events: none;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-top: 0;
+      letter-spacing: -0.03em;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 1.08rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .product {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 170px;
+      border: 1px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+        radial-gradient(circle at top right, rgba(255, 122, 89, 0.18), transparent 42%);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .product:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.24);
+      box-shadow: 0 22px 36px rgba(0, 0, 0, 0.22);
+    }
+
+    .product p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .product button,
+    form button,
+    #logout-btn {
+      appearance: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      box-shadow: 0 12px 24px rgba(255, 122, 89, 0.24);
+      transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    }
+
+    .product button:hover,
+    form button:hover,
+    #logout-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow: 0 16px 28px rgba(255, 122, 89, 0.30);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      color: #eef2ff;
+      font-size: 0.95rem;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      font-size: 15px;
+      background: rgba(5, 10, 18, 0.55);
+      color: var(--text);
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #7f8aa3;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(255, 122, 89, 0.65);
+      box-shadow: 0 0 0 4px rgba(255, 122, 89, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .success {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: rgba(34, 197, 94, 0.26);
+    }
+
+    .error {
+      background: var(--error-bg);
+      color: var(--error-text);
+      border-color: rgba(239, 68, 68, 0.28);
+    }
+
+    .cart-box {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    #login-section,
+    #shop-section {
+      animation: fadeUp 380ms ease both;
+    }
+
+    #cart-status,
+    #checkout-status,
+    #login-status {
+      min-height: 0;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 700px) {
+      header {
+        padding: 16px 18px;
+        gap: 12px;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      header > div:last-child {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .container {
+        margin-top: 22px;
+        padding: 0 14px;
+      }
+
+      .card {
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div data-testid="app-title">E2E Benchmark Demo App</div>
+    <div>
+      Sepet: <span data-testid="cart-count" id="cart-count">0</span>
+      <button id="logout-btn" class="hidden" data-testid="logout-btn">Çıkış</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- LOGIN -->
+    <section id="login-section" class="card">
+      <h2>Giriş Yap</h2>
+      <p class="muted">Test için örnek kullanıcı adı ve parola giriniz.</p>
+      <form id="login-form">
+        <label for="username">Kullanıcı Adı</label>
+        <input id="username" name="username" data-testid="username-input" type="text" placeholder="ornek_kullanici" required />
+
+        <label for="password">Parola</label>
+        <input id="password" name="password" data-testid="password-input" type="password" placeholder="123456" required />
+
+        <button type="submit" data-testid="login-button">Giriş Yap</button>
+      </form>
+      <div id="login-status"></div>
+    </section>
+
+    <!-- SHOP -->
+    <section id="shop-section" class="hidden">
+      <div class="card">
+        <h2>Ürünler</h2>
+        <p class="muted">Aşağıdaki ürünlerden birini sepete ekleyiniz.</p>
+
+        <div class="grid">
+          <div class="product" data-testid="product-card-1">
+            <h3>Laptop</h3>
+            <p>Yüksek performanslı dizüstü bilgisayar</p>
+            <button data-testid="add-to-cart-1" onclick="addToCart('Laptop')">Sepete Ekle</button>
+          </div>
+
+          <div class="product" data-testid="product-card-2">
+            <h3>Mouse</h3>
+            <p>Kablosuz optik mouse</p>
+            <button data-testid="add-to-cart-2" onclick="addToCart('Mouse')">Sepete Ekle</button>
+          </div>
+
+          <div class="product" data-testid="product-card-3">
+            <h3>Keyboard</h3>
+            <p>Mekanik klavye</p>
+            <button data-testid="add-to-cart-3" onclick="addToCart('Keyboard')">Sepete Ekle</button>
+          </div>
+        </div>
+
+        <div id="cart-status" style="margin-top: 16px;"></div>
+      </div>
+
+      <div class="card">
+        <h2>Sipariş Formu</h2>
+        <form id="checkout-form">
+          <label for="fullname">Ad Soyad</label>
+          <input id="fullname" name="fullname" data-testid="fullname-input" type="text" placeholder="Ad Soyad" required />
+
+          <label for="address">Adres</label>
+          <textarea id="address" name="address" data-testid="address-input" rows="4" placeholder="Adres bilgisi" required></textarea>
+
+          <button type="submit" data-testid="checkout-button">Siparişi Tamamla</button>
+        </form>
+
+        <div id="checkout-status"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    let cartCount = 0;
+    let loggedIn = false;
+
+    const loginSection = document.getElementById('login-section');
+    const shopSection = document.getElementById('shop-section');
+    const loginForm = document.getElementById('login-form');
+    const checkoutForm = document.getElementById('checkout-form');
+    const cartCountEl = document.getElementById('cart-count');
+    const loginStatus = document.getElementById('login-status');
+    const cartStatus = document.getElementById('cart-status');
+    const checkoutStatus = document.getElementById('checkout-status');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (username === 'testuser' && password === '123456') {
+        loggedIn = true;
+        loginSection.classList.add('hidden');
+        shopSection.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+
+        loginStatus.innerHTML = '';
+      } else {
+        loginStatus.innerHTML = '<div class="status error" data-testid="login-error">Geçersiz kullanıcı adı veya parola</div>';
+      }
+    });
+
+    logoutBtn.addEventListener('click', function () {
+      loggedIn = false;
+      cartCount = 0;
+      cartCountEl.textContent = cartCount;
+      loginSection.classList.remove('hidden');
+      shopSection.classList.add('hidden');
+      logoutBtn.classList.add('hidden');
+      loginForm.reset();
+      checkoutForm.reset();
+      cartStatus.innerHTML = '';
+      checkoutStatus.innerHTML = '';
+    });
+
+    function addToCart(productName) {
+      if (!loggedIn) return;
+
+      cartCount++;
+      cartCountEl.textContent = cartCount;
+
+      cartStatus.innerHTML = `
+        <div class="status success" data-testid="cart-success">
+          ${productName} sepete eklendi. Toplam ürün: ${cartCount}
+        </div>
+      `;
+    }
+
+    checkoutForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const address = document.getElementById('address').value.trim();
+
+      if (cartCount < 1) {
+        checkoutStatus.innerHTML = '<div class="status error" data-testid="checkout-error">Sipariş vermek için önce sepete ürün ekleyiniz</div>';
+        return;
+      }
+
+      if (!fullname || !address) {
+        checkoutStatus.innerHTML = '<div class="status error" data-testid="checkout-error">Lütfen tüm alanları doldurunuz</div>';
+        return;
+      }
+
+      checkoutStatus.innerHTML = `
+        <div class="status success" data-testid="order-success">
+          Sipariş başarıyla tamamlandı. Teşekkür ederiz, ${fullname}.
+        </div>
+      `;
+
+      checkoutForm.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+Süper. Şimdi projenin **en kritik kısmına** geçiyorsun: **ölçüm üretme**. Çünkü hocanın beklediği şey tam olarak bu; testi otomatik çalıştırmak, tekrar etmek, veriyi CSV’ye almak ve ortalama sonuç üretmek. Bu da senin proje planınla birebir uyumlu. 
+
+# Şimdi yapacağın iş
+
+Önce **benchmark scriptini** koyacağız, sonra:
+
+1. Playwright için 5 deneme
+2. Cypress için 5 deneme
+3. Sonuçları kontrol
+4. Sonra 30 tekrar
+
+---
+
+# 1) `requirements.txt` içeriğini doldur
+
+`requirements.txt` içine şunu yaz:
+
+```txt
+psutil
+pandas
+matplotlib
+```
+
+Sonra kur:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+---
+
+# 2) `scripts/benchmark.py` oluştur
+
+Bu dosyayı oluştur ve tamamını yapıştır:
+
+```python
+import argparse
+import csv
+import os
+import statistics
+import subprocess
+import time
+from datetime import datetime
+
+import psutil
+
+
+def safe_children(proc: psutil.Process):
+    try:
+        return proc.children(recursive=True)
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        return []
+
+
+def collect_process_tree(proc: psutil.Process):
+    processes = [proc]
+    processes.extend(safe_children(proc))
+    alive = []
+    for p in processes:
+        try:
+            if p.is_running():
+                alive.append(p)
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+    return alive
+
+
+def prime_cpu_counters(processes):
+    for p in processes:
+        try:
+            p.cpu_percent(interval=None)
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            pass
+
+
+def sample_metrics(processes):
+    total_cpu = 0.0
+    total_rss_mb = 0.0
+
+    for p in processes:
+        try:
+            total_cpu += p.cpu_percent(interval=None)
+            mem = p.memory_info().rss / (1024 * 1024)
+            total_rss_mb += mem
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+
+    return total_cpu, total_rss_mb
+
+
+def ensure_dir(path: str):
+    os.makedirs(path, exist_ok=True)
+
+
+def run_once(command: str, sample_interval: float):
+    start_ts = time.perf_counter()
+    start_wall = datetime.now().isoformat()
+
+    process = subprocess.Popen(command, shell=True)
+    parent = psutil.Process(process.pid)
+
+    peak_memory_mb = 0.0
+    cpu_samples = []
+    memory_samples = []
+
+    time.sleep(0.2)
+    processes = collect_process_tree(parent)
+    prime_cpu_counters(processes)
+
+    while process.poll() is None:
+        time.sleep(sample_interval)
+        processes = collect_process_tree(parent)
+        cpu_percent, memory_mb = sample_metrics(processes)
+
+        cpu_samples.append(cpu_percent)
+        memory_samples.append(memory_mb)
+
+        if memory_mb > peak_memory_mb:
+            peak_memory_mb = memory_mb
+
+    end_ts = time.perf_counter()
+    duration_sec = end_ts - start_ts
+
+    exit_code = process.returncode
+    success = 1 if exit_code == 0 else 0
+
+    avg_cpu = statistics.mean(cpu_samples) if cpu_samples else 0.0
+    avg_memory = statistics.mean(memory_samples) if memory_samples else 0.0
+
+    return {
+        "start_time": start_wall,
+        "duration_sec": round(duration_sec, 4),
+        "avg_cpu_percent": round(avg_cpu, 4),
+        "avg_memory_mb": round(avg_memory, 4),
+        "peak_memory_mb": round(peak_memory_mb, 4),
+        "sample_count": len(cpu_samples),
+        "exit_code": exit_code,
+        "success": success,
+    }
+
+
+def write_results(output_csv: str, rows: list[dict]):
+    ensure_dir(os.path.dirname(output_csv))
+
+    fieldnames = [
+        "run_index",
+        "tool",
+        "start_time",
+        "duration_sec",
+        "avg_cpu_percent",
+        "avg_memory_mb",
+        "peak_memory_mb",
+        "sample_count",
+        "exit_code",
+        "success",
+    ]
+
+    with open(output_csv, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(row)
+
+
+def print_summary(tool: str, rows: list[dict]):
+    success_rows = [r for r in rows if r["success"] == 1]
+
+    if not success_rows:
+        print(f"[{tool}] Başarılı çalıştırma yok.")
+        return
+
+    avg_duration = statistics.mean(r["duration_sec"] for r in success_rows)
+    avg_cpu = statistics.mean(r["avg_cpu_percent"] for r in success_rows)
+    avg_mem = statistics.mean(r["avg_memory_mb"] for r in success_rows)
+    peak_mem = max(r["peak_memory_mb"] for r in success_rows)
+
+    print()
+    print(f"=== {tool.upper()} ÖZET ===")
+    print(f"Başarılı tekrar sayısı : {len(success_rows)}/{len(rows)}")
+    print(f"Ortalama süre          : {avg_duration:.4f} sn")
+    print(f"Ortalama CPU           : {avg_cpu:.4f} %")
+    print(f"Ortalama bellek        : {avg_mem:.4f} MB")
+    print(f"En yüksek bellek       : {peak_mem:.4f} MB")
+    print()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--tool", required=True, help="playwright veya cypress")
+    parser.add_argument("--command", required=True, help="çalıştırılacak test komutu")
+    parser.add_argument("--repeat", type=int, default=5, help="tekrar sayısı")
+    parser.add_argument("--interval", type=float, default=0.5, help="örnekleme aralığı")
+    parser.add_argument("--output", required=True, help="çıktı csv yolu")
+    args = parser.parse_args()
+
+    rows = []
+
+    for i in range(1, args.repeat + 1):
+        print(f"[{args.tool}] Çalıştırma {i}/{args.repeat} başladı...")
+        result = run_once(args.command, args.interval)
+        row = {
+            "run_index": i,
+            "tool": args.tool,
+            **result,
+        }
+        rows.append(row)
+        print(
+            f"[{args.tool}] {i}. tekrar bitti | süre={row['duration_sec']} sn | "
+            f"avg_cpu={row['avg_cpu_percent']} | peak_mem={row['peak_memory_mb']} MB | "
+            f"exit={row['exit_code']}"
+        )
+
+    write_results(args.output, rows)
+    print_summary(args.tool, rows)
+    print(f"CSV kaydedildi: {args.output}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 3) `scripts/summarize_results.py` oluştur
+
+Bu dosya CSV’leri özetleyecek:
+
+```python
+import argparse
+import os
+import pandas as pd
+
+
+def summarize_file(path: str):
+    df = pd.read_csv(path)
+    ok = df[df["success"] == 1].copy()
+
+    if ok.empty:
+      return {
+          "file": os.path.basename(path),
+          "success_count": 0,
+          "total_count": len(df),
+          "avg_duration_sec": None,
+          "min_duration_sec": None,
+          "max_duration_sec": None,
+          "avg_cpu_percent": None,
+          "avg_memory_mb": None,
+          "peak_memory_mb": None,
+      }
+
+    return {
+        "file": os.path.basename(path),
+        "success_count": int(ok["success"].sum()),
+        "total_count": int(len(df)),
+        "avg_duration_sec": round(ok["duration_sec"].mean(), 4),
+        "min_duration_sec": round(ok["duration_sec"].min(), 4),
+        "max_duration_sec": round(ok["duration_sec"].max(), 4),
+        "avg_cpu_percent": round(ok["avg_cpu_percent"].mean(), 4),
+        "avg_memory_mb": round(ok["avg_memory_mb"].mean(), 4),
+        "peak_memory_mb": round(ok["peak_memory_mb"].max(), 4),
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--playwright", required=True)
+    parser.add_argument("--cypress", required=True)
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+
+    p = summarize_file(args.playwright)
+    c = summarize_file(args.cypress)
+
+    result = pd.DataFrame([p, c])
+    os.makedirs(os.path.dirname(args.output), exist_ok=True)
+    result.to_csv(args.output, index=False, encoding="utf-8-sig")
+
+    print(result.to_string(index=False))
+    print(f"\nÖzet dosyası kaydedildi: {args.output}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 4) `package.json` scriptlerini güncelle
+
+`package.json` içindeki `scripts` bölümünü buna benzet:
+
+```json
+"scripts": {
+  "test:playwright": "playwright test",
+  "test:cypress": "cypress run --browser electron"
+}
+```
+
+Chrome kuruluysa electron yerine chrome da kullanabilirsin.
+
+---
+
+# 5) Önce kısa deneme yap
+
+Sunucu açık kalsın:
+
+```bash
+cd app
+python -m http.server 5500
+```
+
+Yeni terminalde repo kökünden:
+
+## Playwright benchmark
+
+```bash
+python scripts/benchmark.py --tool playwright --command "npm run test:playwright" --repeat 5 --interval 0.5 --output "results/playwright/playwright_benchmark_5.csv"
+```
+
+## Cypress benchmark
+
+```bash
+python scripts/benchmark.py --tool cypress --command "npm run test:cypress" --repeat 5 --interval 0.5 --output "results/cypress/cypress_benchmark_5.csv"
+```
+
+---
+
+# 6) Sonuçları özetle
+
+```bash
+python scripts/summarize_results.py --playwright "results/playwright/playwright_benchmark_5.csv" --cypress "results/cypress/cypress_benchmark_5.csv" --output "results/summaries/benchmark_summary_5.csv"
+```
+
+---
+
+# 7) CSV oluştuysa tabloyu doldur
+
+Elindeki `benchmark_summary_5.csv` ile şu tabloyu doldur:
+
+| Ölçüt                  | Playwright | Cypress |
+| ---------------------- | ---------: | ------: |
+| Başarılı tekrar sayısı |        ... |     ... |
+| Ortalama süre (sn)     |        ... |     ... |
+| Minimum süre (sn)      |        ... |     ... |
+| Maksimum süre (sn)     |        ... |     ... |
+| Ortalama CPU (%)       |        ... |     ... |
+| Ortalama bellek (MB)   |        ... |     ... |
+| En yüksek bellek (MB)  |        ... |     ... |
+
+---
+
+# 8) `docs/test-log.md` içine bunu ekle
+
+```md
+## Benchmark Ölçüm Çalışması
+- Playwright benchmark scripti çalıştırıldı.
+- Cypress benchmark scripti çalıştırıldı.
+- Sonuçlar CSV dosyalarına kaydedildi.
+- Özet karşılaştırma dosyası oluşturuldu.
+- Kullanılan tekrar sayısı: 5
+- Sonraki adım: 30 tekrarlı nihai ölçüm
+```
+
+---
+
+# 9) İlk rapor cümlelerin hazır
+
+CSV’ler oluştuğunda bunları kullanacaksın:
+
+### Yöntem için
+
+> Her iki çerçeve için eşdeğer E2E test senaryoları hazırlanmıştır. Testlerin çalıştırılması ve kaynak tüketimlerinin ölçülmesi Python tabanlı bir otomasyon scripti ile gerçekleştirilmiştir. Ölçüm sürecinde ana süreç ve alt süreçler izlenmiş; CPU, bellek ve süre verileri tekrar bazında CSV dosyalarına kaydedilmiştir.
+
+### Bulgular için
+
+> Ön ölçüm sonuçlarında Playwright ve Cypress çerçeveleri için toplam test süresi, ortalama CPU kullanımı ve bellek tüketimi karşılaştırılmıştır. Elde edilen değerler tekrar bazında kaydedilmiş ve özet tablolar üzerinden değerlendirilmiştir.
+
+---
+
+# 10) Nihai aşama
+
+5 tekrarlı deneme düzgün çalışırsa sonra şunu çalıştır:
+
+```bash
+python scripts/benchmark.py --tool playwright --command "npm run test:playwright" --repeat 30 --interval 0.5 --output "results/playwright/playwright_benchmark_30.csv"
+```
+
+```bash
+python scripts/benchmark.py --tool cypress --command "npm run test:cypress" --repeat 30 --interval 0.5 --output "results/cypress/cypress_benchmark_30.csv"
+```
+
+```bash
+python scripts/summarize_results.py --playwright "results/playwright/playwright_benchmark_30.csv" --cypress "results/cypress/cypress_benchmark_30.csv" --output "results/summaries/benchmark_summary_30.csv"
+```
+
+---
+
+# Şimdi senden istediğim tek şey
+
+Önce **5 tekrarlı ölçümü** çalıştır.
+
+Sonra bana sadece şunu yaz:
+
+**“5 tekrarlı benchmark bitti”**
+
+Hata çıkarsa hata metnini aynen gönder. Sonraki adımda sana **raporun Bulgular bölümü için hazır tablo ve yorum metni** yazdıracağım.
