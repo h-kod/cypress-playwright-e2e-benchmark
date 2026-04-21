@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E2E Benchmark Demo App</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #fb923c;
+      --success: #22c55e;
+      --error: #ef4444;
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(160deg, #020617, var(--bg)); color: var(--text); min-height: 100vh; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:18px 24px; background: rgba(2,6,23,0.8); border-bottom:1px solid var(--border); position: sticky; top: 0; }
+    [data-testid="app-title"] { font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+    .container { max-width: 1100px; margin: 32px auto; padding: 0 20px; }
+    .card { background: rgba(17,24,39,0.9); border:1px solid var(--border); border-radius:20px; padding:24px; margin-bottom:20px; }
+    .hidden { display:none; }
+    label { display:block; margin: 0 0 6px; font-weight: 700; }
+    input, textarea { width:100%; padding:12px 14px; margin-bottom:14px; border-radius:12px; border:1px solid var(--border); background:#0b1220; color: var(--text); }
+    button { background: linear-gradient(135deg, var(--accent), #f97316); color:#fff; border:0; padding:11px 16px; border-radius:12px; font-weight:700; cursor:pointer; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+    .product { border:1px solid var(--border); border-radius:16px; padding:18px; background:#0b1220; }
+    .muted { color: var(--muted); }
+    .status { margin-top:12px; padding:12px 14px; border-radius:12px; font-weight:700; }
+    .success { background: rgba(34,197,94,0.12); color: #bbf7d0; border:1px solid rgba(34,197,94,0.3); }
+    .error { background: rgba(239,68,68,0.12); color: #fecaca; border:1px solid rgba(239,68,68,0.3); }
+  </style>
+</head>
+<body>
+  <header>
+    <div data-testid="app-title">E2E Benchmark Demo App</div>
+    <div>Sepet: <span data-testid="cart-count">0</span></div>
+  </header>
+
+  <div class="container">
+    <section id="login-section" class="card">
+      <h2>Giriş Yap</h2>
+      <p class="muted">Test için kullanıcı adı ve parola giriniz.</p>
+      <form id="login-form">
+        <label for="username">Kullanıcı Adı</label>
+        <input id="username" data-testid="username-input" type="text" required />
+        <label for="password">Parola</label>
+        <input id="password" data-testid="password-input" type="password" required />
+        <button type="submit" data-testid="login-button">Giriş Yap</button>
+      </form>
+      <div id="login-status"></div>
+    </section>
+
+    <section id="shop-section" class="hidden">
+      <div class="card">
+        <h2>Ürünler</h2>
+        <div class="grid">
+          <div class="product" data-testid="product-card-1">
+            <h3>Laptop</h3>
+            <p class="muted">Yüksek performanslı dizüstü bilgisayar</p>
+            <button data-testid="add-to-cart-1" onclick="addToCart('Laptop')">Sepete Ekle</button>
+          </div>
+          <div class="product" data-testid="product-card-2">
+            <h3>Mouse</h3>
+            <p class="muted">Kablosuz optik mouse</p>
+            <button data-testid="add-to-cart-2" onclick="addToCart('Mouse')">Sepete Ekle</button>
+          </div>
+          <div class="product" data-testid="product-card-3">
+            <h3>Keyboard</h3>
+            <p class="muted">Mekanik klavye</p>
+            <button data-testid="add-to-cart-3" onclick="addToCart('Keyboard')">Sepete Ekle</button>
+          </div>
+        </div>
+        <div id="cart-status"></div>
+      </div>
+
+      <div class="card">
+        <h2>Sipariş Formu</h2>
+        <form id="checkout-form">
+          <label for="fullname">Ad Soyad</label>
+          <input id="fullname" data-testid="fullname-input" type="text" required />
+          <label for="address">Adres</label>
+          <textarea id="address" data-testid="address-input" rows="4" required></textarea>
+          <button type="submit" data-testid="checkout-button">Siparişi Tamamla</button>
+        </form>
+        <div id="checkout-status"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    let cartCount = 0;
+    let loggedIn = false;
+    const loginSection = document.getElementById('login-section');
+    const shopSection = document.getElementById('shop-section');
+    const loginForm = document.getElementById('login-form');
+    const checkoutForm = document.getElementById('checkout-form');
+    const cartCountEl = document.querySelector('[data-testid="cart-count"]');
+    const loginStatus = document.getElementById('login-status');
+    const cartStatus = document.getElementById('cart-status');
+    const checkoutStatus = document.getElementById('checkout-status');
+
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if (username === 'testuser' && password === '123456') {
+        loggedIn = true;
+        loginSection.classList.add('hidden');
+        shopSection.classList.remove('hidden');
+        loginStatus.innerHTML = '';
+      } else {
+        loginStatus.innerHTML = '<div class="status error" data-testid="login-error">Geçersiz kullanıcı adı veya parola</div>';
+      }
+    });
+
+    function addToCart(productName) {
+      if (!loggedIn) return;
+      cartCount += 1;
+      cartCountEl.textContent = String(cartCount);
+      cartStatus.innerHTML = '<div class="status success" data-testid="cart-success">' + productName + ' sepete eklendi. Toplam ürün: ' + cartCount + '</div>';
+    }
+
+    checkoutForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const fullname = document.getElementById('fullname').value.trim();
+      const address = document.getElementById('address').value.trim();
+      if (cartCount < 1) {
+        checkoutStatus.innerHTML = '<div class="status error" data-testid="checkout-error">Sipariş vermek için önce sepete ürün ekleyiniz</div>';
+        return;
+      }
+      if (!fullname || !address) {
+        checkoutStatus.innerHTML = '<div class="status error" data-testid="checkout-error">Lütfen tüm alanları doldurunuz</div>';
+        return;
+      }
+      checkoutStatus.innerHTML = '<div class="status success" data-testid="order-success">Sipariş başarıyla tamamlandı. Teşekkür ederiz, ' + fullname + '.</div>';
+    });
+  </script>
+</body>
+</html>
