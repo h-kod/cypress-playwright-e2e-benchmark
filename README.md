@@ -19,14 +19,14 @@ Projede üç temel kullanıcı akışı test edilir:
 2. ürünü sepete ekleme
 3. siparişi tamamlama
 
-Bu akış hem Cypress hem de Playwright tarafında eşdeğer şekilde koşturulur. Ardından 30 tekrar üzerinden ölçüm alınır ve CSV raporlarına yazılır.
+Bu akış hem Cypress hem de Playwright tarafında eşdeğer şekilde koşturulur. Ardından 100 tekrar üzerinden ölçüm alınır ve CSV raporlarına yazılır.
 
 Benchmark özetine göre:
 
-| Araç | Başarılı Çalışma | Ortalama Süre | Ortalama Bellek | Tepe Bellek |
-|---|---:|---:|---:|---:|
-| Playwright | 30 / 30 | 3.8769 sn | 340.8204 MB | 698.2852 MB |
-| Cypress | 30 / 30 | 13.9360 sn | 918.6872 MB | 1276.8086 MB |
+| Araç | Başarılı Çalışma | Ortalama Süre | Ortalama CPU | Ortalama Bellek | Tepe Bellek |
+|---|---:|---:|---:|---:|---:|
+| Playwright | 100 / 100 | 3.7790 sn | 114.4989 % | 347.2740 MB | 701.1523 MB |
+| Cypress | 100 / 100 | 13.7650 sn | 141.8972 % | 923.5276 MB | 1506.2227 MB |
 
 Bu sonuçlar, bu projedeki demo senaryosu özelinde Playwright’ın daha hızlı ve daha hafif çalıştığını gösterir.
 
@@ -97,20 +97,21 @@ Bu üç görüntü, testin uçtan uca iş akışını belgeliyor:
 
 ![Cypress CSV çıktısı](screenshots/cypress30.png)
 
-Bu ekranlar, 30 tekrar üzerinden alınan ham ölçüm satırlarını gösterir. Özet CSV dosyaları da bu ham verilerden üretilmiştir.
+Bu ekranlar, önceki 30 tekrar koşusuna ait ham ölçüm örnekleridir. Güncel benchmark sonuçları 100 tekrar üzerinden üretilmiştir ve esas alınması gereken CSV dosyalar `results/` altındadır.
 
 ## Sonuç Dosyaları
 
 `results/` klasörü benchmark çıktılarının toplandığı yerdir.
 
-- `results/playwright/playwright_benchmark_30.csv`: Playwright için ham tekrar ölçümleri
-- `results/cypress/cypress_benchmark_30.csv`: Cypress için ham tekrar ölçümleri
-- `results/summaries/benchmark_summary_30.csv`: iki aracın karşılaştırmalı özeti
+- `results/playwright/playwright_benchmark_100.csv`: Playwright için ham tekrar ölçümleri
+- `results/cypress/cypress_benchmark_100.csv`: Cypress için ham tekrar ölçümleri
+- `results/summaries/benchmark_summary_100.csv`: iki aracın karşılaştırmalı özeti
+- `results/thesis_stats_report_100.md`: tez için hazırlanmış analiz raporu
 
 Özet CSV’den görülen temel metrikler:
 
-- Playwright: 30/30 başarılı, ortalama süre 3.8769 sn, ortalama bellek 340.8204 MB
-- Cypress: 30/30 başarılı, ortalama süre 13.9360 sn, ortalama bellek 918.6872 MB
+- Playwright: 100/100 başarılı, ortalama süre 3.7790 sn, ortalama CPU 114.4989 %, ortalama bellek 347.2740 MB
+- Cypress: 100/100 başarılı, ortalama süre 13.7650 sn, ortalama CPU 141.8972 %, ortalama bellek 923.5276 MB
 
 ## Loglar ve Raporlar
 
@@ -118,8 +119,8 @@ Bu ekranlar, 30 tekrar üzerinden alınan ham ölçüm satırlarını gösterir.
 
 - `docs/cypress-test-output.txt`: Cypress test çıktısı
 - `docs/playwright-test-output.txt`: Playwright test çıktısı
-- `docs/cypress-benchmark-30.log`: Cypress benchmark kayıtları
-- `docs/playwright-benchmark-30.log`: Playwright benchmark kayıtları
+- `docs/cypress-benchmark-100.log`: Cypress benchmark kayıtları
+- `docs/playwright-benchmark-100.log`: Playwright benchmark kayıtları
 - `docs/test-log.md`: çalışmanın kısa operasyonel özeti
 
 Bu dosyalar, yalnızca sonuçları değil, sonucun nasıl oluştuğunu da takip etmeyi kolaylaştırır.
@@ -159,14 +160,15 @@ Benchmark ve özet raporlar `scripts/` klasöründeki Python scriptleri ile üre
 - `scripts/benchmark.py`
 - `scripts/summarize_results.py`
 - `scripts/run-cypress.js`
+- `scripts/analyze_stats_for_thesis.py`
 
-Özet oluşturma mantığı, ham CSV dosyalarını okuyup başarı sayısı, süre ortalaması ve bellek istatistiklerini tek bir karşılaştırma tablosuna dönüştürmektir.
+Özet oluşturma mantığı, ham CSV dosyalarını okuyup başarı sayısı, süre ortalaması, CPU ortalaması ve bellek istatistiklerini tek bir karşılaştırma tablosuna dönüştürmektir.
 
 ## Raporun Yorumlanması
 
 Bu çalışmada iki noktaya özellikle dikkat etmek gerekir:
 
-1. **Başarı oranı eşit**: Her iki araç da 30 denemenin 30’unu başarıyla tamamlamıştır.
+1. **Başarı oranı eşit**: Her iki araç da 100 denemenin 100’ünü başarıyla tamamlamıştır.
 2. **Kaynak kullanımı farklı**: Aynı akışta Cypress, Playwright’a göre daha uzun sürmüş ve daha fazla bellek tüketmiştir.
 
 Bu nedenle bu depo, yalnızca "hangi araç daha hızlı" sorusuna değil, aynı zamanda "aynı kullanıcı akışında hangi araç daha verimli raporlanıyor" sorusuna da veri sağlar.
