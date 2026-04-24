@@ -1,0 +1,2 @@
+run_index,tool,start_time,duration_sec,avg_cpu_percent,avg_system_cpu_percent,avg_memory_mb,peak_memory_mb,cpu_time_sec,sample_count,exit_code,success
+1,playwright,2026-04-24T04:17:51.907812,3.8857,106.6176,37.0353,354.7252,661.8516,3.625,17,0,1

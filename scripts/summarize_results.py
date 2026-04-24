@@ -16,9 +16,13 @@ def summarize_file(path: str):
             "min_duration_sec": None,
             "max_duration_sec": None,
             "avg_cpu_percent": None,
+            "avg_system_cpu_percent": None,
             "avg_memory_mb": None,
             "peak_memory_mb": None,
+            "avg_cpu_time_sec": None,
         }
+    system_cpu = ok["avg_system_cpu_percent"] if "avg_system_cpu_percent" in ok.columns else None
+    cpu_time = ok["cpu_time_sec"] if "cpu_time_sec" in ok.columns else None
     return {
         "file": os.path.basename(path),
         "success_count": int(ok["success"].sum()),
@@ -27,8 +31,10 @@ def summarize_file(path: str):
         "min_duration_sec": round(ok["duration_sec"].min(), 4),
         "max_duration_sec": round(ok["duration_sec"].max(), 4),
         "avg_cpu_percent": round(ok["avg_cpu_percent"].mean(), 4),
+        "avg_system_cpu_percent": round(system_cpu.mean(), 4) if system_cpu is not None else None,
         "avg_memory_mb": round(ok["avg_memory_mb"].mean(), 4),
         "peak_memory_mb": round(ok["peak_memory_mb"].max(), 4),
+        "avg_cpu_time_sec": round(cpu_time.mean(), 4) if cpu_time is not None else None,
     }
 
 
