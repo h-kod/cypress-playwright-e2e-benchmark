@@ -89,21 +89,21 @@ Bu üç görüntü, testin uçtan uca iş akışını belgeliyor:
  
 ### Ek Görseller
 
-`screenshots/cypress050jpg`
+`screenshots/cypress050.jpg`
 
-![Cypress 0.50 görüntüsü](screenshots/cypress050jpg)
+![Cypress 0.50 görüntüsü](screenshots/cypress050.jpg)
 
-`screenshots/cypreş550100.jpg`
+`screenshots/cypress50100.jpg`
 
-![Cypress 55/100 görüntüsü](screenshots/cypreş550100.jpg)
+![Cypress 50/100 görüntüsü](screenshots/cypress50100.jpg)
 
-`screenshots/playwright050jpg`
+`screenshots/playwright050.jpg`
 
-![Playwright 0.50 görüntüsü](screenshots/playwright050jpg)
+![Playwright 0.50 görüntüsü](screenshots/playwright050.jpg)
 
-`screenshots/playwright50100jpg`
+`screenshots/playwright50100.jpg`
 
-![Playwright 50/100 görüntüsü](screenshots/playwright50100jpg)
+![Playwright 50/100 görüntüsü](screenshots/playwright50100.jpg)
 
 ### Benchmark Çıktıları
 
