@@ -86,6 +86,24 @@ Bu üç görüntü, testin uçtan uca iş akışını belgeliyor:
 - ilk görsel giriş ekranını
 - ikinci görsel sepete ürün eklenmesi ve form alanlarını
 - üçüncü görsel ise başarı mesajı ile tamamlanan sipariş durumunu
+ 
+### Ek Görseller
+
+`screenshots/cypress050jpg`
+
+![Cypress 0.50 görüntüsü](screenshots/cypress050jpg)
+
+`screenshots/cypreş550100.jpg`
+
+![Cypress 55/100 görüntüsü](screenshots/cypreş550100.jpg)
+
+`screenshots/playwright050jpg`
+
+![Playwright 0.50 görüntüsü](screenshots/playwright050jpg)
+
+`screenshots/playwright50100jpg`
+
+![Playwright 50/100 görüntüsü](screenshots/playwright50100jpg)
 
 ### Benchmark Çıktıları
 
