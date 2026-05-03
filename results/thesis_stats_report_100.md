@@ -114,7 +114,13 @@
 
 # Teze Yazılabilecek Sonuç Paragrafı
 
-Bu benchmark çalışmasında Playwright ve Cypress, aynı demo kullanıcı akışı 100 tekrar üzerinden karşılaştırılmıştır. Playwright tarafı headless modda tek worker ile, Cypress tarafı ise headless Electron tarayıcısı üzerinden çalıştırılmıştır. Sonuçlar, CPU kullanımında Cypress'in ölçüm boyunca 0,0000 değerinde kalması nedeniyle dağılımın normal olmadığını ve farkın non-parametrik testlerle değerlendirilmesi gerektiğini göstermiştir. Hem ortalama RAM hem de tepe RAM metriklerinde Playwright, Cypress'e göre daha düşük kaynak tüketmiştir. Mann-Whitney U ve Welch t-testi sonuçları metrikler arasında istatistiksel olarak anlamlı fark bulunduğunu desteklemekte, etki büyüklüğü ise farkın güçlü olduğunu göstermektedir.
+Bu benchmark çalışmasında Playwright ve Cypress, baseline işlevsel kullanıcı akışı 100 tekrar üzerinden karşılaştırılmıştır. Playwright tarafı headless modda tek worker ile, Cypress tarafı ise headless Electron tarayıcısı üzerinden çalıştırılmıştır. Sonuçlar, CPU kullanımında Cypress'in ölçüm boyunca 0,0000 değerinde kalması nedeniyle dağılımın normal olmadığını ve farkın non-parametrik testlerle değerlendirilmesi gerektiğini göstermiştir. Hem ortalama RAM hem de tepe RAM metriklerinde Playwright, Cypress'e göre daha düşük kaynak tüketmiştir. Mann-Whitney U ve Welch t-testi sonuçları metrikler arasında istatistiksel olarak anlamlı fark bulunduğunu desteklemekte, etki büyüklüğü ise farkın güçlü olduğunu göstermektedir.
+
+# Planlanan Profil Yapısı
+
+- UI-heavy profil yapısı
+- CPU-heavy profil yapısı
+- RAM-heavy profil yapısı
 
 # Ekler İçin Önerilen Kod Parçaları
 

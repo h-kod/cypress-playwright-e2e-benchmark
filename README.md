@@ -13,13 +13,13 @@ gibi boyutlarda nasıl davrandığını görünür hale getirmektir.
 
 ## Kısa Özet
 
-Projede üç temel kullanıcı akışı test edilir:
+Projede üç temel kullanıcı akışı, baseline işlevsel kullanıcı akışı kapsamında test edilir:
 
 1. giriş yapma
 2. ürünü sepete ekleme
 3. siparişi tamamlama
 
-Bu akış hem Cypress hem de Playwright tarafında eşdeğer şekilde koşturulur. Ardından 100 tekrar üzerinden ölçüm alınır ve CSV raporlarına yazılır.
+Bu baseline akış hem Cypress hem de Playwright tarafında eşdeğer şekilde koşturulur. Ardından 100 tekrar üzerinden ölçüm alınır ve CSV raporlarına yazılır.
 
 Benchmark özetine göre:
 
@@ -55,7 +55,13 @@ Bu sade akış, iki test aracını aynı koşullarda karşılaştırmayı kolayl
 
 ## Test Akışı
 
-Testlerde sırasıyla şu davranışlar doğrulanır:
+Bu depoda korunan üç test şunlardır:
+
+- başarılı sipariş akışı
+- geçersiz giriş
+- boş sepetle sipariş
+
+Başarılı sipariş akışında sırasıyla şu davranışlar doğrulanır:
 
 1. Demo uygulama açılır.
 2. Kullanıcı bilgileri ile giriş yapılır.
@@ -63,7 +69,7 @@ Testlerde sırasıyla şu davranışlar doğrulanır:
 4. Sipariş formu doldurulur.
 5. Siparişin başarıyla tamamlandığı mesajı kontrol edilir.
 
-`docs/test-log.md` içindeki notlara göre her iki framework de bu akışı başarıyla tamamlamıştır ve her biri 3 test geçmiştir.
+`docs/test-log.md` içindeki notlara göre her iki framework de bu üç testten başarılı şekilde geçmiştir.
 
 ## Görsel Kanıtlar
 
@@ -107,15 +113,7 @@ Bu üç görüntü, testin uçtan uca iş akışını belgeliyor:
 
 ### Benchmark Çıktıları
 
-`screenshots/playwright30.png`
-
-![Playwright CSV çıktısı](screenshots/playwright30.png)
-
-`screenshots/cypress30.png`
-
-![Cypress CSV çıktısı](screenshots/cypress30.png)
-
-Bu ekranlar, önceki 30 tekrar koşusuna ait ham ölçüm örnekleridir. Güncel benchmark sonuçları 100 tekrar üzerinden üretilmiştir ve esas alınması gereken CSV dosyalar `results/` altındadır.
+Bu bölümdeki referanslar, geçmiş benchmark çıktılarının nasıl arşivlendiğini gösterir. Güncel benchmark sonuçları 100 tekrar üzerinden üretilmiştir ve esas alınması gereken CSV dosyalar `results/` altındadır.
 
 ## Sonuç Dosyaları
 
@@ -130,6 +128,14 @@ Bu ekranlar, önceki 30 tekrar koşusuna ait ham ölçüm örnekleridir. Güncel
 
 - Playwright: 100/100 başarılı, ortalama süre 3.7790 sn, ortalama CPU 114.4989 %, ortalama bellek 347.2740 MB
 - Cypress: 100/100 başarılı, ortalama süre 13.7650 sn, ortalama CPU 141.8972 %, ortalama bellek 923.5276 MB
+
+## Planlanan Profil Yapısı
+
+Bu depoda şu an yalnızca baseline işlevsel kullanıcı akışı ölçülmüştür. İleride eklenmesi planlanan profil yapısı şunlardır:
+
+- UI-heavy profil yapısı
+- CPU-heavy profil yapısı
+- RAM-heavy profil yapısı
 
 ## Loglar ve Raporlar
 

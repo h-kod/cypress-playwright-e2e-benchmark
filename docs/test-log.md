@@ -1,14 +1,13 @@
 ## Playwright Test Çalışması
 - Demo uygulama başarıyla açıldı.
-- Playwright test senaryoları oluşturuldu.
-- Login, sepete ürün ekleme ve sipariş tamamlama akışları test edildi.
+- Playwright test senaryoları, baseline işlevsel kullanıcı akışı için oluşturuldu.
+- Başarılı sipariş akışı, geçersiz giriş ve boş sepetle sipariş senaryoları test edildi.
 - Sonuç: BAŞARILI
 - Not: 3 test geçti.
 
 ## Cypress Test Çalışması
-- Cypress test senaryoları oluşturuldu.
-- Playwright ile eşdeğer akışlar tanımlandı.
-- Login, sepete ürün ekleme ve sipariş tamamlama akışları test edildi.
+- Cypress test senaryoları, baseline işlevsel kullanıcı akışı için oluşturuldu.
+- Playwright ile eşdeğer olarak başarılı sipariş akışı, geçersiz giriş ve boş sepetle sipariş senaryoları test edildi.
 - Sonuç: BAŞARILI
 - Not: 3 test geçti.
 
@@ -17,7 +16,7 @@
 - Cypress benchmark scripti çalıştırıldı.
 - Sonuçlar CSV dosyalarına kaydedildi.
 - Özet karşılaştırma dosyası oluşturuldu.
-- Kullanılan tekrar sayısı: 30
-- Playwright: 30/30 başarılı, ortalama süre 3.8769 sn, ortalama bellek 340.8204 MB, en yüksek bellek 698.2852 MB
-- Cypress: 30/30 başarılı, ortalama süre 13.9360 sn, ortalama bellek 918.6872 MB, en yüksek bellek 1276.8086 MB
+- Kullanılan tekrar sayısı: 100
+- Playwright: 100/100 başarılı, ortalama süre 3.7790 sn, ortalama bellek 347.2740 MB, en yüksek bellek 701.1523 MB
+- Cypress: 100/100 başarılı, ortalama süre 13.7650 sn, ortalama bellek 923.5276 MB, en yüksek bellek 1506.2227 MB
 - Sonuç: TAMAMLANDI
