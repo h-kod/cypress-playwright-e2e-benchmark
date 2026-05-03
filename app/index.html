@@ -13,24 +13,198 @@
       --accent: #fb923c;
       --success: #22c55e;
       --error: #ef4444;
-      --border: rgba(255,255,255,0.12);
+      --info: #3b82f6;
+      --border: rgba(255, 255, 255, 0.12);
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(160deg, #020617, var(--bg)); color: var(--text); min-height: 100vh; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:18px 24px; background: rgba(2,6,23,0.8); border-bottom:1px solid var(--border); position: sticky; top: 0; }
-    [data-testid="app-title"] { font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
-    .container { max-width: 1100px; margin: 32px auto; padding: 0 20px; }
-    .card { background: rgba(17,24,39,0.9); border:1px solid var(--border); border-radius:20px; padding:24px; margin-bottom:20px; }
-    .hidden { display:none; }
-    label { display:block; margin: 0 0 6px; font-weight: 700; }
-    input, textarea { width:100%; padding:12px 14px; margin-bottom:14px; border-radius:12px; border:1px solid var(--border); background:#0b1220; color: var(--text); }
-    button { background: linear-gradient(135deg, var(--accent), #f97316); color:#fff; border:0; padding:11px 16px; border-radius:12px; font-weight:700; cursor:pointer; }
-    .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
-    .product { border:1px solid var(--border); border-radius:16px; padding:18px; background:#0b1220; }
-    .muted { color: var(--muted); }
-    .status { margin-top:12px; padding:12px 14px; border-radius:12px; font-weight:700; }
-    .success { background: rgba(34,197,94,0.12); color: #bbf7d0; border:1px solid rgba(34,197,94,0.3); }
-    .error { background: rgba(239,68,68,0.12); color: #fecaca; border:1px solid rgba(239,68,68,0.3); }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(160deg, #020617, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+      background: rgba(2, 6, 23, 0.8);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+    }
+
+    [data-testid="app-title"] {
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    label {
+      display: block;
+      margin: 0 0 6px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #0b1220;
+      color: var(--text);
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      color: #fff;
+      border: 0;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .product {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      background: #0b1220;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .success {
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .error {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fecaca;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .info {
+      background: rgba(59, 130, 246, 0.12);
+      color: #dbeafe;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .profile-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      background: #1e293b;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--accent), #f97316);
+    }
+
+    .profile-panel {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      background: #0b1220;
+      margin-top: 16px;
+    }
+
+    .profile-panel[hidden] {
+      display: none;
+    }
+
+    .profile-toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .profile-toolbar input {
+      margin-bottom: 0;
+      flex: 1 1 240px;
+    }
+
+    .profile-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      max-height: 280px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .profile-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #111827;
+    }
+
+    .profile-item.dimmed {
+      opacity: 0.35;
+    }
+
+    .profile-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
   </style>
 </head>
 <body>
@@ -87,12 +261,69 @@
         </form>
         <div id="checkout-status"></div>
       </div>
+
+      <div class="card">
+        <h2>Profil Laboratuvarı</h2>
+        <p class="muted">Bu alan baseline akıştan ayrı olarak test profilleri içerir.</p>
+        <div class="profile-tabs" role="tablist" aria-label="Test profilleri">
+          <button type="button" class="tab active" data-testid="profile-tab-ui" data-profile="ui-heavy">UI-heavy</button>
+          <button type="button" class="tab" data-testid="profile-tab-cpu" data-profile="cpu-heavy">CPU-heavy</button>
+          <button type="button" class="tab" data-testid="profile-tab-ram" data-profile="ram-heavy">RAM-heavy</button>
+        </div>
+
+        <section class="profile-panel" data-testid="ui-heavy-profile" data-profile-panel="ui-heavy">
+          <h3>UI-heavy profil yapısı</h3>
+          <div class="profile-toolbar">
+            <input data-testid="ui-filter-input" type="text" placeholder="Filtrele" aria-label="UI filtre" />
+            <button type="button" data-testid="ui-sort-button">Ada göre sırala</button>
+          </div>
+          <div class="profile-list" data-testid="ui-heavy-list"></div>
+          <div class="status info" data-testid="ui-heavy-summary">Gösterilen öğe sayısı: 0</div>
+        </section>
+
+        <section class="profile-panel" data-testid="cpu-heavy-profile" data-profile-panel="cpu-heavy" hidden>
+          <h3>CPU-heavy profil yapısı</h3>
+          <p class="muted">Deterministik hesaplama yükü tarayıcı tarafında çalışır.</p>
+          <div class="profile-actions">
+            <button type="button" data-testid="cpu-run-button">Hesaplamayı Çalıştır</button>
+          </div>
+          <div class="status info" data-testid="cpu-heavy-status">Son sonuç hazır değil.</div>
+        </section>
+
+        <section class="profile-panel" data-testid="ram-heavy-profile" data-profile-panel="ram-heavy" hidden>
+          <h3>RAM-heavy profil yapısı</h3>
+          <p class="muted">Kontrollü veri yapısı oluşturulur ve serbest bırakılabilir.</p>
+          <div class="profile-actions">
+            <button type="button" data-testid="ram-allocate-button">Bellek Oluştur</button>
+            <button type="button" data-testid="ram-release-button">Belleği Serbest Bırak</button>
+          </div>
+          <div class="status info" data-testid="ram-heavy-status">Bellek yükü oluşturulmadı.</div>
+        </section>
+      </div>
     </section>
   </div>
 
   <script>
     let cartCount = 0;
     let loggedIn = false;
+    const uiSeedItems = [
+      { label: 'Analytics Panel', type: 'panel' },
+      { label: 'Cart Drawer', type: 'drawer' },
+      { label: 'Checkout Summary', type: 'summary' },
+      { label: 'Profile Sidebar', type: 'sidebar' },
+      { label: 'Recommendation Strip', type: 'strip' },
+      { label: 'Order Timeline', type: 'timeline' },
+      { label: 'Promo Banner', type: 'banner' },
+      { label: 'Recent Activity', type: 'feed' },
+      { label: 'Saved Filters', type: 'filter' },
+      { label: 'Support Widget', type: 'widget' },
+      { label: 'Payment Methods', type: 'methods' },
+      { label: 'Shipping Options', type: 'shipping' }
+    ];
+    let uiItems = [];
+    let uiView = uiItems.slice();
+    let ramBuffer = null;
+
     const loginSection = document.getElementById('login-section');
     const shopSection = document.getElementById('shop-section');
     const loginForm = document.getElementById('login-form');
@@ -101,11 +332,102 @@
     const loginStatus = document.getElementById('login-status');
     const cartStatus = document.getElementById('cart-status');
     const checkoutStatus = document.getElementById('checkout-status');
+    const profileTabs = Array.from(document.querySelectorAll('[data-profile]'));
+    const profilePanels = Array.from(document.querySelectorAll('[data-profile-panel]'));
+    const uiList = document.querySelector('[data-testid="ui-heavy-list"]');
+    const uiFilterInput = document.querySelector('[data-testid="ui-filter-input"]');
+    const uiSortButton = document.querySelector('[data-testid="ui-sort-button"]');
+    const uiSummary = document.querySelector('[data-testid="ui-heavy-summary"]');
+    const cpuRunButton = document.querySelector('[data-testid="cpu-run-button"]');
+    const cpuStatus = document.querySelector('[data-testid="cpu-heavy-status"]');
+    const ramAllocateButton = document.querySelector('[data-testid="ram-allocate-button"]');
+    const ramReleaseButton = document.querySelector('[data-testid="ram-release-button"]');
+    const ramStatus = document.querySelector('[data-testid="ram-heavy-status"]');
+
+    function renderUiItems(items) {
+      uiList.innerHTML = items.map((item) => (
+        '<article class="profile-item" data-testid="ui-heavy-item" data-item-id="' + item.id + '">' +
+          '<strong>' + item.label + '</strong>' +
+          '<span class="muted">' + item.type + '</span>' +
+        '</article>'
+      )).join('');
+      uiSummary.textContent = 'Gösterilen öğe sayısı: ' + items.length;
+    }
+
+    function setActiveProfile(profileName) {
+      profileTabs.forEach((tab) => {
+        tab.classList.toggle('active', tab.dataset.profile === profileName);
+      });
+      profilePanels.forEach((panel) => {
+        panel.hidden = panel.dataset.profilePanel !== profileName;
+      });
+    }
+
+    function applyUiFilter() {
+      const query = uiFilterInput.value.trim().toLowerCase();
+      const filtered = uiItems.filter((item) => (
+        item.label.toLowerCase().includes(query) || item.type.toLowerCase().includes(query)
+      ));
+      uiView = filtered.slice();
+      renderUiItems(uiView);
+    }
+
+    function sortUiItems() {
+      uiView = uiView.slice().sort((a, b) => a.label.localeCompare(b.label, 'tr'));
+      renderUiItems(uiView);
+    }
+
+    function runCpuHeavyProfile() {
+      const seed = 'baseline-ui-cpu-ram-profile';
+      let checksum = 0;
+      const rounds = 240;
+      const width = 640;
+
+      for (let round = 0; round < rounds; round += 1) {
+        const values = [];
+        for (let i = 0; i < width; i += 1) {
+          const charCode = seed.charCodeAt((round + i) % seed.length);
+          values.push((charCode * (i + 1) + round * 17 + (i % 11)) % 1000);
+        }
+        values.sort((a, b) => a - b);
+        for (let i = 0; i < values.length; i += 1) {
+          checksum = (checksum + values[i] * (i + 1)) % 1000003;
+        }
+      }
+
+      cpuStatus.textContent = 'Son sonuç: ' + checksum;
+      cpuStatus.setAttribute('data-cpu-result', String(checksum));
+    }
+
+    function allocateRamHeavyProfile() {
+      const blockCount = 48;
+      const blockSize = 4096;
+      const blocks = [];
+
+      for (let blockIndex = 0; blockIndex < blockCount; blockIndex += 1) {
+        const block = new Array(blockSize);
+        for (let i = 0; i < blockSize; i += 1) {
+          block[i] = 'ram-' + blockIndex + '-' + i + '-' + ((blockIndex * 31 + i * 17) % 97);
+        }
+        blocks.push(block);
+      }
+
+      ramBuffer = blocks;
+      ramStatus.textContent = 'Bellek yükü hazır. Blok sayısı: ' + blocks.length + ', blok boyutu: ' + blockSize;
+      ramStatus.setAttribute('data-ram-block-count', String(blocks.length));
+    }
+
+    function releaseRamHeavyProfile() {
+      ramBuffer = null;
+      ramStatus.textContent = 'Bellek yükü serbest bırakıldı.';
+      ramStatus.setAttribute('data-ram-block-count', '0');
+    }
 
     loginForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
+
       if (username === 'testuser' && password === '123456') {
         loggedIn = true;
         loginSection.classList.add('hidden');
@@ -117,7 +439,10 @@
     });
 
     function addToCart(productName) {
-      if (!loggedIn) return;
+      if (!loggedIn) {
+        return;
+      }
+
       cartCount += 1;
       cartCountEl.textContent = String(cartCount);
       cartStatus.innerHTML = '<div class="status success" data-testid="cart-success">' + productName + ' sepete eklendi. Toplam ürün: ' + cartCount + '</div>';
@@ -127,16 +452,45 @@
       e.preventDefault();
       const fullname = document.getElementById('fullname').value.trim();
       const address = document.getElementById('address').value.trim();
+
       if (cartCount < 1) {
         checkoutStatus.innerHTML = '<div class="status error" data-testid="checkout-error">Sipariş vermek için önce sepete ürün ekleyiniz</div>';
         return;
       }
+
       if (!fullname || !address) {
         checkoutStatus.innerHTML = '<div class="status error" data-testid="checkout-error">Lütfen tüm alanları doldurunuz</div>';
         return;
       }
+
       checkoutStatus.innerHTML = '<div class="status success" data-testid="order-success">Sipariş başarıyla tamamlandı. Teşekkür ederiz, ' + fullname + '.</div>';
     });
+
+    profileTabs.forEach((tab) => {
+      tab.addEventListener('click', function () {
+        setActiveProfile(tab.dataset.profile);
+      });
+    });
+
+    uiFilterInput.addEventListener('input', applyUiFilter);
+    uiSortButton.addEventListener('click', sortUiItems);
+    cpuRunButton.addEventListener('click', runCpuHeavyProfile);
+    ramAllocateButton.addEventListener('click', allocateRamHeavyProfile);
+    ramReleaseButton.addEventListener('click', releaseRamHeavyProfile);
+
+    uiItems = Array.from({ length: 3 }, function (_, batchIndex) {
+      return uiSeedItems.map(function (item, itemIndex) {
+        const variant = batchIndex + 1;
+        return {
+          id: 'ui-' + String(variant) + '-' + String(itemIndex + 1).padStart(2, '0'),
+          label: item.label + ' ' + variant,
+          type: item.type
+        };
+      });
+    }).flat();
+    uiView = uiItems.slice();
+    renderUiItems(uiView);
+    setActiveProfile('ui-heavy');
   </script>
 </body>
 </html>

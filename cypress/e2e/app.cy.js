@@ -33,4 +33,45 @@ describe('E2E Benchmark Demo App', () => {
     cy.get('[data-testid="checkout-button"]').click();
     cy.get('[data-testid="checkout-error"]').should('contain', 'önce sepete ürün ekleyiniz');
   });
+
+  it('ui-heavy profile filters and sorts visible items', () => {
+    cy.visit('/');
+    cy.get('[data-testid="username-input"]').type('testuser');
+    cy.get('[data-testid="password-input"]').type('123456');
+    cy.get('[data-testid="login-button"]').click();
+    cy.get('[data-testid="profile-tab-ui"]').click();
+    cy.get('[data-testid="ui-heavy-profile"]').should('be.visible');
+    cy.get('[data-testid="ui-heavy-item"]').should('have.length', 36);
+    cy.get('[data-testid="ui-filter-input"]').type('cart drawer 2');
+    cy.get('[data-testid="ui-heavy-item"]').should('have.length', 1);
+    cy.get('[data-testid="ui-heavy-summary"]').should('contain', '1');
+    cy.get('[data-testid="ui-sort-button"]').click();
+    cy.get('[data-testid="ui-heavy-list"]').should('contain', 'Cart Drawer 2');
+  });
+
+  it('cpu-heavy profile runs deterministic browser-side computation', () => {
+    cy.visit('/');
+    cy.get('[data-testid="username-input"]').type('testuser');
+    cy.get('[data-testid="password-input"]').type('123456');
+    cy.get('[data-testid="login-button"]').click();
+    cy.get('[data-testid="profile-tab-cpu"]').click();
+    cy.get('[data-testid="cpu-heavy-profile"]').should('be.visible');
+    cy.get('[data-testid="cpu-run-button"]').click();
+    cy.get('[data-testid="cpu-heavy-status"]').should('have.attr', 'data-cpu-result');
+    cy.get('[data-testid="cpu-heavy-status"]').invoke('attr', 'data-cpu-result').should('match', /^\d+$/);
+  });
+
+  it('ram-heavy profile allocates and releases controlled memory load', () => {
+    cy.visit('/');
+    cy.get('[data-testid="username-input"]').type('testuser');
+    cy.get('[data-testid="password-input"]').type('123456');
+    cy.get('[data-testid="login-button"]').click();
+    cy.get('[data-testid="profile-tab-ram"]').click();
+    cy.get('[data-testid="ram-heavy-profile"]').should('be.visible');
+    cy.get('[data-testid="ram-allocate-button"]').click();
+    cy.get('[data-testid="ram-heavy-status"]').should('have.attr', 'data-ram-block-count', '48');
+    cy.get('[data-testid="ram-heavy-status"]').should('contain', 'Blok sayısı: 48');
+    cy.get('[data-testid="ram-release-button"]').click();
+    cy.get('[data-testid="ram-heavy-status"]').should('have.attr', 'data-ram-block-count', '0');
+  });
 });

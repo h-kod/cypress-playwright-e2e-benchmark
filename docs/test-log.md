@@ -2,14 +2,16 @@
 - Demo uygulama başarıyla açıldı.
 - Playwright test senaryoları, baseline işlevsel kullanıcı akışı için oluşturuldu.
 - Başarılı sipariş akışı, geçersiz giriş ve boş sepetle sipariş senaryoları test edildi.
+- UI-heavy, CPU-heavy ve RAM-heavy profil testleri çalıştırıldı.
 - Sonuç: BAŞARILI
-- Not: 3 test geçti.
+- Not: 6 test geçti.
 
 ## Cypress Test Çalışması
 - Cypress test senaryoları, baseline işlevsel kullanıcı akışı için oluşturuldu.
 - Playwright ile eşdeğer olarak başarılı sipariş akışı, geçersiz giriş ve boş sepetle sipariş senaryoları test edildi.
+- UI-heavy, CPU-heavy ve RAM-heavy profil testleri çalıştırıldı.
 - Sonuç: BAŞARILI
-- Not: 3 test geçti.
+- Not: 6 test geçti.
 
 ## Benchmark Ölçüm Çalışması
 - Playwright benchmark scripti çalıştırıldı.

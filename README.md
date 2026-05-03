@@ -55,7 +55,7 @@ Bu sade akış, iki test aracını aynı koşullarda karşılaştırmayı kolayl
 
 ## Test Akışı
 
-Bu depoda korunan üç test şunlardır:
+Bu depoda korunan baseline testler şunlardır:
 
 - başarılı sipariş akışı
 - geçersiz giriş
@@ -69,7 +69,13 @@ Başarılı sipariş akışında sırasıyla şu davranışlar doğrulanır:
 4. Sipariş formu doldurulur.
 5. Siparişin başarıyla tamamlandığı mesajı kontrol edilir.
 
-`docs/test-log.md` içindeki notlara göre her iki framework de bu üç testten başarılı şekilde geçmiştir.
+`docs/test-log.md` içindeki notlara göre baseline akışı ve profil testleri her iki framework tarafında da başarılı şekilde geçmektedir.
+
+Ek olarak demo uygulamada şu profil testleri bulunur:
+
+- UI-heavy profil testi
+- CPU-heavy profil testi
+- RAM-heavy profil testi
 
 ## Görsel Kanıtlar
 
@@ -129,13 +135,15 @@ Bu bölümdeki referanslar, geçmiş benchmark çıktılarının nasıl arşivle
 - Playwright: 100/100 başarılı, ortalama süre 3.7790 sn, ortalama CPU 114.4989 %, ortalama bellek 347.2740 MB
 - Cypress: 100/100 başarılı, ortalama süre 13.7650 sn, ortalama CPU 141.8972 %, ortalama bellek 923.5276 MB
 
-## Planlanan Profil Yapısı
+## Profil Laboratuvarı
 
-Bu depoda şu an yalnızca baseline işlevsel kullanıcı akışı ölçülmüştür. İleride eklenmesi planlanan profil yapısı şunlardır:
+Demo uygulamada baseline işlevsel kullanıcı akışından ayrı olarak üç profil alanı bulunur:
 
 - UI-heavy profil yapısı
 - CPU-heavy profil yapısı
 - RAM-heavy profil yapısı
+
+Bu profiller test edilebilir `data-testid` seçicileri ile birlikte gelir ve baseline benchmark sonuçlarını değiştirmez. Güncel CSV özetleri hâlâ yalnızca baseline işlevsel kullanıcı akışı için geçerlidir.
 
 ## Loglar ve Raporlar
 
