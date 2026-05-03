@@ -8,6 +8,9 @@ from datetime import datetime
 
 import psutil
 
+VALID_TOOLS = ("playwright", "cypress")
+VALID_PROFILES = ("baseline", "ui-heavy", "cpu-heavy", "ram-heavy")
+
 
 def safe_children(proc: psutil.Process):
     try:
@@ -65,6 +68,10 @@ def sample_metrics(processes, sample_interval: float, previous_cpu_time: float):
 def ensure_dir(path: str):
     if path:
         os.makedirs(path, exist_ok=True)
+
+
+def default_output_path(tool: str, profile: str, repeat: int) -> str:
+    return os.path.join("results", tool, f"{profile}_benchmark_{repeat}.csv")
 
 
 def run_once(command: str, sample_interval: float):
@@ -129,6 +136,7 @@ def write_results(output_csv: str, rows: list[dict]):
     fieldnames = [
         "run_index",
         "tool",
+        "profile",
         "start_time",
         "duration_sec",
         "avg_cpu_percent",
@@ -165,26 +173,28 @@ def print_summary(tool: str, rows: list[dict]):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tool", required=True)
+    parser.add_argument("--tool", required=True, choices=VALID_TOOLS)
+    parser.add_argument("--profile", default="baseline", choices=VALID_PROFILES)
     parser.add_argument("--command", required=True)
     parser.add_argument("--repeat", type=int, default=5)
     parser.add_argument("--interval", type=float, default=0.2)
-    parser.add_argument("--output", required=True)
+    parser.add_argument("--output")
     args = parser.parse_args()
+    output_csv = args.output or default_output_path(args.tool, args.profile, args.repeat)
     rows = []
     for i in range(1, args.repeat + 1):
-        print(f"[{args.tool}] Çalıştırma {i}/{args.repeat} başladı...")
+        print(f"[{args.tool}/{args.profile}] Çalıştırma {i}/{args.repeat} başladı...")
         result = run_once(args.command, args.interval)
-        row = {"run_index": i, "tool": args.tool, **result}
+        row = {"run_index": i, "tool": args.tool, "profile": args.profile, **result}
         rows.append(row)
         print(
-            f"[{args.tool}] {i}. tekrar bitti | süre={row['duration_sec']} sn | "
+            f"[{args.tool}/{args.profile}] {i}. tekrar bitti | süre={row['duration_sec']} sn | "
             f"avg_cpu={row['avg_cpu_percent']} | system_cpu={row['avg_system_cpu_percent']} | "
             f"cpu_time={row['cpu_time_sec']} sn | peak_mem={row['peak_memory_mb']} MB | exit={row['exit_code']}"
         )
-    write_results(args.output, rows)
-    print_summary(args.tool, rows)
-    print(f"CSV kaydedildi: {args.output}")
+    write_results(output_csv, rows)
+    print_summary(f"{args.tool}/{args.profile}", rows)
+    print(f"CSV kaydedildi: {output_csv}")
 
 
 if __name__ == "__main__":

@@ -185,6 +185,26 @@ npm run test:playwright
 npm run test:cypress
 ```
 
+### Profil Bazlı Test Komutları
+
+Playwright:
+
+```bash
+npm run test:playwright:baseline
+npm run test:playwright:ui-heavy
+npm run test:playwright:cpu-heavy
+npm run test:playwright:ram-heavy
+```
+
+Cypress:
+
+```bash
+npm run test:cypress:baseline
+npm run test:cypress:ui-heavy
+npm run test:cypress:cpu-heavy
+npm run test:cypress:ram-heavy
+```
+
 ## Benchmark Üretimi
 
 Benchmark ve özet raporlar `scripts/` klasöründeki Python scriptleri ile üretilir:
@@ -193,6 +213,14 @@ Benchmark ve özet raporlar `scripts/` klasöründeki Python scriptleri ile üre
 - `scripts/summarize_results.py`
 - `scripts/run-cypress.js`
 - `scripts/analyze_stats_for_thesis.py`
+
+Profil bazlı benchmark koşularını tek seferde üretmek için:
+
+```bash
+npm run benchmark:all
+```
+
+Bu komut, Playwright ve Cypress için `baseline`, `ui-heavy`, `cpu-heavy` ve `ram-heavy` profillerinin tamamını 100 tekrar çalıştırır ve çıktıları `results/{tool}/{profile}_benchmark_100.csv` biçiminde yazar.
 
 Özet oluşturma mantığı, ham CSV dosyalarını okuyup başarı sayısı, süre ortalaması, CPU ortalaması ve bellek istatistiklerini tek bir karşılaştırma tablosuna dönüştürmektir.
 

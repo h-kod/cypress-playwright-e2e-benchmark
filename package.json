@@ -6,7 +6,16 @@
   "scripts": {
     "test": "echo \"No tests specified\" && exit 0",
     "test:playwright": "npx playwright test",
-    "test:cypress": "node scripts/run-cypress.js"
+    "test:playwright:baseline": "npx playwright test --grep \"login add-to-cart checkout flow|invalid login shows error|checkout without cart shows error\"",
+    "test:playwright:ui-heavy": "npx playwright test --grep \"ui-heavy profile starts, filters, and completes with visible UI output\"",
+    "test:playwright:cpu-heavy": "npx playwright test --grep \"cpu-heavy profile starts, runs computation, and shows deterministic result\"",
+    "test:playwright:ram-heavy": "npx playwright test --grep \"ram-heavy profile starts, allocates memory, and releases it\"",
+    "test:cypress": "node scripts/run-cypress.js",
+    "test:cypress:baseline": "node scripts/run-cypress-profile.js baseline",
+    "test:cypress:ui-heavy": "node scripts/run-cypress-profile.js ui-heavy",
+    "test:cypress:cpu-heavy": "node scripts/run-cypress-profile.js cpu-heavy",
+    "test:cypress:ram-heavy": "node scripts/run-cypress-profile.js ram-heavy",
+    "benchmark:all": "node scripts/run-benchmark-all.js"
   },
   "keywords": [
     "cypress",
