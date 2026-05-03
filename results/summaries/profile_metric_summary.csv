@@ -1,0 +1,13 @@
+﻿tool,profile,metric,mean,median,std,min,max
+playwright,baseline,duration_sec,3.779,3.677,0.2493,3.4182,4.9102
+playwright,baseline,avg_cpu_percent,114.4989,114.6647,6.5136,100.5859,128.9062
+playwright,baseline,avg_system_cpu_percent,41.1868,39.475,8.2723,26.4933,66.6238
+playwright,baseline,avg_memory_mb,347.274,347.8349,9.425,321.6326,367.7836
+playwright,baseline,peak_memory_mb,675.8011,675.5332,15.2885,638.6367,701.1523
+playwright,baseline,cpu_time_sec,3.7645,3.7578,0.2477,3.1875,4.4219
+cypress,baseline,duration_sec,13.765,13.6386,0.4125,12.8727,15.116
+cypress,baseline,avg_cpu_percent,141.8972,141.4931,4.2953,132.5721,155.4087
+cypress,baseline,avg_system_cpu_percent,40.0885,39.8016,4.685,29.4627,52.5477
+cypress,baseline,avg_memory_mb,923.5276,922.7743,9.4749,907.4439,993.2221
+cypress,baseline,peak_memory_mb,1264.9963,1261.9668,24.8697,1246.8672,1506.2227
+cypress,baseline,cpu_time_sec,17.7797,17.6484,0.7816,16.3906,20.2031

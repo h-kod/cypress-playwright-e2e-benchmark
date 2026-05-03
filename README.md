@@ -214,6 +214,14 @@ Benchmark ve özet raporlar `scripts/` klasöründeki Python scriptleri ile üre
 - `scripts/run-cypress.js`
 - `scripts/analyze_stats_for_thesis.py`
 
+Profil bazlı özet, karşılaştırma ve grafik üretimi için:
+
+```bash
+npm run analyze:profiles
+```
+
+Bu analiz, `results/{tool}/{profile}_benchmark_100.csv` dosyalarını okuyarak `results/summaries/profile_metric_summary.csv`, `results/summaries/profile_comparison_stats.csv` ve `results/graphs/` altında profil bazlı çıktılar üretir.
+
 Profil bazlı benchmark koşularını tek seferde üretmek için:
 
 ```bash

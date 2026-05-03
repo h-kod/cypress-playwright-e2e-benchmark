@@ -1,0 +1,7 @@
+﻿profile,metric,playwright_n,cypress_n,mann_whitney_u,cliffs_delta,welch_t,welch_df,cohens_d
+baseline,duration_sec,100,100,0.0,-1.0,-207.1853,162.7946,-29.3004
+baseline,avg_cpu_percent,100,100,0.0,-1.0,-35.1155,171.4092,-4.9661
+baseline,avg_system_cpu_percent,100,100,4922.0,0.0156,1.1553,156.5847,0.1634
+baseline,avg_memory_mb,100,100,0.0,-1.0,-431.189,197.9945,-60.9793
+baseline,peak_memory_mb,100,100,0.0,-1.0,-201.8266,164.4753,-28.5426
+baseline,cpu_time_sec,100,100,0.0,-1.0,-170.9318,118.6856,-24.1734
