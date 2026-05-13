@@ -245,9 +245,40 @@ def plot_profile_metric(profile: str, metric: str, playwright_values: list[float
         labels.append("Cypress")
 
     ax.boxplot(data, tick_labels=labels, showmeans=True)
+
+    # Uç noktaları doğrudan kesin değerlerle etiketle.
+    for index, values in enumerate(data, start=1):
+        min_value = min(values)
+        max_value = max(values)
+        x_offset = 0.08
+        y_padding = (max(values) - min(values)) * 0.02 if max(values) != min(values) else 0.02
+
+        ax.scatter([index, index], [min_value, max_value], color="#333333", s=18, zorder=3)
+        ax.annotate(
+            f"min {min_value:.4f}",
+            xy=(index, min_value),
+            xytext=(index + x_offset, min_value - y_padding),
+            textcoords="data",
+            fontsize=8,
+            ha="left",
+            va="top",
+            arrowprops=dict(arrowstyle="-", color="#666666", lw=0.8),
+        )
+        ax.annotate(
+            f"max {max_value:.4f}",
+            xy=(index, max_value),
+            xytext=(index + x_offset, max_value + y_padding),
+            textcoords="data",
+            fontsize=8,
+            ha="left",
+            va="bottom",
+            arrowprops=dict(arrowstyle="-", color="#666666", lw=0.8),
+        )
+
     ax.set_title(f"{profile} | {metric} comparison")
     ax.set_ylabel(metric)
     ax.grid(axis="y", alpha=0.25)
+    ax.margins(x=0.18)
     fig.tight_layout()
     fig.savefig(output_path, dpi=160)
     plt.close(fig)

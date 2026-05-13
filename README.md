@@ -1,41 +1,53 @@
-﻿# Cypress vs Playwright E2E Benchmark
+# Cypress vs Playwright E2E Benchmark
 
-Bu depo, aynÄ± demo uygulama Ã¼zerinde **Cypress** ve **Playwright** ile yazÄ±lmÄ±ÅŸ uÃ§tan uca testlerin performansÄ±nÄ± karÅŸÄ±laÅŸtÄ±rmak iÃ§in hazÄ±rlanmÄ±ÅŸ bir benchmark Ã§alÄ±ÅŸmasÄ±dÄ±r.
+Bu depo, aynı demo uygulama üzerinde **Cypress** ve **Playwright** ile yazılımış uçtan uca testlerin performansını karşılaştırmak için hazırlanmış bir benchmark çalışmasıdır.
 
-Ã‡alÄ±ÅŸmanÄ±n ana odaÄŸÄ± sadece testlerin "geÃ§mesi" deÄŸildir. AsÄ±l amaÃ§, iki aracÄ±n aynÄ± kullanÄ±cÄ± akÄ±ÅŸlarÄ±nda:
+Çalışmanın ana odağı sadece testlerin "geçmesi" değildir. Asıl amaç, iki aracın aynı kullanıcı akışlarında:
 
-- Ã§alÄ±ÅŸma sÃ¼resi
-- bellek tÃ¼ketimi
-- tekrarlar arasÄ±ndaki kararlÄ±lÄ±k
-- Ã¶lÃ§Ã¼m Ã§Ä±ktÄ±larÄ±nÄ±n raporlanabilirliÄŸi
+- çalışma süresi
 
-gibi boyutlarda nasÄ±l davrandÄ±ÄŸÄ±nÄ± gÃ¶rÃ¼nÃ¼r hale getirmektir.
+- bellek tüketimi
 
-## KÄ±sa Ã–zet
+- tekrarlar arasındaki kararlılık
 
-Projede Ã¼Ã§ temel kullanÄ±cÄ± akÄ±ÅŸÄ±, baseline iÅŸlevsel kullanÄ±cÄ± akÄ±ÅŸÄ± kapsamÄ±nda test edilir:
+- ölçüm çıktılarının raporlanabilirliği
 
-1. giriÅŸ yapma
-2. Ã¼rÃ¼nÃ¼ sepete ekleme
-3. sipariÅŸi tamamlama
+gibi boyutlarda nasıl davrandığını görünür hale getirmektir.
 
-Bu baseline akÄ±ÅŸ hem Cypress hem de Playwright tarafÄ±nda eÅŸdeÄŸer ÅŸekilde koÅŸturulur. ArdÄ±ndan 100 tekrar Ã¼zerinden Ã¶lÃ§Ã¼m alÄ±nÄ±r ve CSV raporlarÄ±na yazÄ±lÄ±r.
+## Kısa Özet
 
-Benchmark Ã¶zetine gÃ¶re:
+Projede üç temel kullanıcı akışı, baseline işlevsel kullanıcı akışı kapsamında test edilir:
 
-| AraÃ§ | BaÅŸarÄ±lÄ± Ã‡alÄ±ÅŸma | Ortalama SÃ¼re | Ortalama CPU | Ortalama Bellek | Tepe Bellek |
+1. giriş yapma
+
+2. ürünü sepete ekleme
+
+3. siparişi tamamlama
+
+Bu baseline akış hem Cypress hem de Playwright tarafında eşdeğer şekilde koşturulur. Ardından 100 tekrar üzerinden ölçüm alınır ve CSV raporlarına yazılır.
+
+Benchmark özetine göre:
+
+| Araç | Başarılı Çalışma | Ortalama Süre | Ortalama CPU | Ortalama Bellek | Tepe Bellek |
+
 |---|---:|---:|---:|---:|---:|
+
 | Playwright | 100 / 100 | 4.0135 sn | 107.7352 % | 373.7757 MB | 739.8229 MB |
+
 | Cypress | 100 / 100 | 13.8553 sn | 143.7743 % | 957.4314 MB | 1333.6548 MB |
 
-Bu sonuÃ§lar, bu projedeki demo senaryosu Ã¶zelinde Playwrightâ€™Ä±n daha hÄ±zlÄ± ve daha hafif Ã§alÄ±ÅŸtÄ±ÄŸÄ±nÄ± gÃ¶sterir.
+Bu sonuçlar, bu projedeki demo senaryosu özelinde Playwright'ın daha hızlı ve daha hafif çalıştığını gösterir.
 
 ## Ölçüm Ortamı
 
 - İşletim sistemi: Windows
+
 - Node.js: v25.9.0
+
 - Playwright: headless mod, 1 worker
+
 - Cypress: headless Electron
+
 - Tekrar sayısı: profil başına 100
 
 ## Sonuç Paketi
@@ -43,260 +55,376 @@ Bu sonuÃ§lar, bu projedeki demo senaryosu Ã¶zelinde Playwrightâ€™Ä±n 
 Son benchmark ve analiz çıktıları `results/` altında profil bazlı düzenlenir:
 
 - `results/playwright/baseline_benchmark_100.csv`
+
 - `results/playwright/ui-heavy_benchmark_100.csv`
+
 - `results/playwright/cpu-heavy_benchmark_100.csv`
+
 - `results/playwright/ram-heavy_benchmark_100.csv`
+
 - `results/cypress/baseline_benchmark_100.csv`
+
 - `results/cypress/ui-heavy_benchmark_100.csv`
+
 - `results/cypress/cpu-heavy_benchmark_100.csv`
+
 - `results/cypress/ram-heavy_benchmark_100.csv`
+
 - `results/summaries/profile_metric_summary.csv`
+
 - `results/summaries/profile_comparison_stats.csv`
+
 - `results/profile_thesis_report_100.md`
+
 - `results/graphs/`
 
 Bu paket, tez tablosuna aktarılacak değerlerin virgüllü ondalık biçime dönüştürülmesine uygun özetleri de içerir.
+
+## Öne Çıkan Grafikler
+
+Aşağıdaki dört grafik, profil bazlı benchmark davranışını en kısa yoldan özetler:
+
+### Baseline Çalışma Süresi
+
+![Baseline çalışma süresi karşılaştırması](results/graphs/baseline_duration_sec_comparison.png)
+
+### Baseline Bellek Kullanımı
+
+![Baseline ortalama bellek karşılaştırması](results/graphs/baseline_avg_memory_mb_comparison.png)
+
+### CPU-Heavy CPU Kullanımı
+
+![CPU-heavy ortalama CPU karşılaştırması](results/graphs/cpu-heavy_avg_cpu_percent_comparison.png)
+
+### RAM-Heavy Tepe Bellek
+
+![RAM-heavy tepe bellek karşılaştırması](results/graphs/ram-heavy_peak_memory_mb_comparison.png)
 
 ## Komutlar
 
 Profil bazlı test ve benchmark komutları:
 
 - `npm run test:playwright:baseline`
+
 - `npm run test:playwright:ui-heavy`
+
 - `npm run test:playwright:cpu-heavy`
+
 - `npm run test:playwright:ram-heavy`
+
 - `npm run test:cypress:baseline`
+
 - `npm run test:cypress:ui-heavy`
+
 - `npm run test:cypress:cpu-heavy`
+
 - `npm run test:cypress:ram-heavy`
+
 - `npm run benchmark:all`
+
 - `npm run analyze:profiles`
-## Repo YapÄ±sÄ±
+
+## Repo Yapısı
 
 ```text
-app/                Demo uygulamanÄ±n HTML sayfasÄ±
+
+app/                Demo uygulamanın HTML sayfası
+
 cypress/            Cypress testleri
+
 playwright-tests/   Playwright testleri
+
 scripts/            Benchmark ve raporlama scriptleri
-results/            CSV sonuÃ§larÄ± ve Ã¶zetler
-docs/               Ã‡alÄ±ÅŸma notlarÄ±, loglar ve baÅŸarÄ± ekran gÃ¶rÃ¼ntÃ¼leri
-screenshots/        Test akÄ±ÅŸÄ±na ait gÃ¶rseller ve benchmark Ã§Ä±ktÄ±larÄ±
+
+results/            CSV sonuçları ve özetler
+
+docs/               Çalışma notları, loglar ve başarı ekran görüntüleri
+
+screenshots/        Test akışına ait görseller ve benchmark çıktıları
+
 ```
 
 ## Demo Uygulama
 
-Testlerin Ã§alÄ±ÅŸtÄ±ÄŸÄ± Ã¶rnek uygulama `app/index.html` iÃ§inde yer alÄ±r. Uygulama, benchmark iÃ§in Ã¶zellikle basit tutulmuÅŸtur ve ÅŸu etkileÅŸimleri iÃ§erir:
+Testlerin çalıştığı örnek uygulama `app/index.html` içinde yer alır. Uygulama, benchmark için özellikle basit tutulmuştur ve şu etkileşimleri içerir:
 
-- kullanÄ±cÄ± adÄ± ve parola ile giriÅŸ
-- Ã¼rÃ¼n kartlarÄ± Ã¼zerinden sepete Ã¼rÃ¼n ekleme
-- sipariÅŸ formu doldurma
-- sipariÅŸi tamamlama mesajÄ±nÄ± doÄŸrulama
+- kullanıcı adı ve parola ile giriş
 
-Bu sade akÄ±ÅŸ, iki test aracÄ±nÄ± aynÄ± koÅŸullarda karÅŸÄ±laÅŸtÄ±rmayÄ± kolaylaÅŸtÄ±rÄ±r.
+- ürün kartları üzerinden sepete ürün ekleme
 
-## Test AkÄ±ÅŸÄ±
+- sipariş formu doldurma
 
-Bu depoda korunan baseline testler ÅŸunlardÄ±r:
+- siparişi tamamlama mesajını doğrulama
 
-- baÅŸarÄ±lÄ± sipariÅŸ akÄ±ÅŸÄ±
-- geÃ§ersiz giriÅŸ
-- boÅŸ sepetle sipariÅŸ
+Bu sade akış, iki test aracını aynı koşullarda karşılaştırmayı kolaylaştırır.
 
-BaÅŸarÄ±lÄ± sipariÅŸ akÄ±ÅŸÄ±nda sÄ±rasÄ±yla ÅŸu davranÄ±ÅŸlar doÄŸrulanÄ±r:
+## Test Akışı
 
-1. Demo uygulama aÃ§Ä±lÄ±r.
-2. KullanÄ±cÄ± bilgileri ile giriÅŸ yapÄ±lÄ±r.
-3. ÃœrÃ¼nler arasÄ±ndan bir Ã¶ÄŸe sepete eklenir.
-4. SipariÅŸ formu doldurulur.
-5. SipariÅŸin baÅŸarÄ±yla tamamlandÄ±ÄŸÄ± mesajÄ± kontrol edilir.
+Bu depoda korunan baseline testler şunlardır:
 
-`docs/test-log.md` iÃ§indeki notlara gÃ¶re baseline akÄ±ÅŸÄ± ve profil testleri her iki framework tarafÄ±nda da baÅŸarÄ±lÄ± ÅŸekilde geÃ§mektedir.
+- başarılı sipariş akışı
 
-Ek olarak demo uygulamada ÅŸu profil testleri bulunur:
+- geçersiz giriş
+
+- boş sepetle sipariş
+
+Başarılı sipariş akışında sırasıyla şu davranışlar doğrulanır:
+
+1. Demo uygulama açılır.
+
+2. Kullanıcı bilgileri ile giriş yapılır.
+
+3. Ürünler arasından bir öğe sepete eklenir.
+
+4. Sipariş formu doldurulur.
+
+5. Siparişin başarıyla tamamlandığı mesajı kontrol edilir.
+
+`docs/test-log.md` içindeki notlara göre baseline akışı ve profil testleri her iki framework tarafında da başarılı şekilde geçmektedir.
+
+Ek olarak demo uygulamada şu profil testleri bulunur:
 
 - UI-heavy profil testi
+
 - CPU-heavy profil testi
+
 - RAM-heavy profil testi
 
-## GÃ¶rsel KanÄ±tlar
+## Görsel Kanıtlar
 
-### Demo Uygulama EkranlarÄ±
+### Demo Uygulama Ekranları
 
 `screenshots/demoapp1.png`
 
-![GiriÅŸ ekranÄ±](screenshots/demoapp1.png)
+![Giriş ekranı](screenshots/demoapp1.png)
 
 `screenshots/demoapp2.png`
 
-![ÃœrÃ¼n ekleme ve sipariÅŸ formu](screenshots/demoapp2.png)
+![Ürün ekleme ve sipariş formu](screenshots/demoapp2.png)
 
 `screenshots/demoapp3.png`
 
-![SipariÅŸin baÅŸarÄ±yla tamamlanmasÄ±](screenshots/demoapp3.png)
+![Siparişin başarıyla tamamlanması](screenshots/demoapp3.png)
 
-Bu Ã¼Ã§ gÃ¶rÃ¼ntÃ¼, testin uÃ§tan uca iÅŸ akÄ±ÅŸÄ±nÄ± belgeliyor:
+Bu üç görüntü, testin uçtan uca iş akışını belgeliyor:
 
-- ilk gÃ¶rsel giriÅŸ ekranÄ±nÄ±
-- ikinci gÃ¶rsel sepete Ã¼rÃ¼n eklenmesi ve form alanlarÄ±nÄ±
-- Ã¼Ã§Ã¼ncÃ¼ gÃ¶rsel ise baÅŸarÄ± mesajÄ± ile tamamlanan sipariÅŸ durumunu
- 
-### Ek GÃ¶rseller
+- ilk görsel giriş ekranını
+
+- ikinci görsel sepete ürün eklenmesi ve form alanlarını
+
+- üçüncü görsel ise başarı mesajı ile tamamlanan sipariş durumunu
+
+### Ek Görseller
 
 `screenshots/cypress050.jpg`
 
-![Cypress 0.50 gÃ¶rÃ¼ntÃ¼sÃ¼](screenshots/cypress050.jpg)
+![Cypress 0.50 görüntüsü](screenshots/cypress050.jpg)
 
 `screenshots/cypress50100.jpg`
 
-![Cypress 50/100 gÃ¶rÃ¼ntÃ¼sÃ¼](screenshots/cypress50100.jpg)
+![Cypress 50/100 görüntüsü](screenshots/cypress50100.jpg)
 
 `screenshots/playwright050.jpg`
 
-![Playwright 0.50 gÃ¶rÃ¼ntÃ¼sÃ¼](screenshots/playwright050.jpg)
+![Playwright 0.50 görüntüsü](screenshots/playwright050.jpg)
 
 `screenshots/playwright50100.jpg`
 
-![Playwright 50/100 gÃ¶rÃ¼ntÃ¼sÃ¼](screenshots/playwright50100.jpg)
+![Playwright 50/100 görüntüsü](screenshots/playwright50100.jpg)
 
-### Benchmark Ã‡Ä±ktÄ±larÄ±
+### Benchmark Çıktıları
 
-Bu bÃ¶lÃ¼mdeki referanslar, geÃ§miÅŸ benchmark Ã§Ä±ktÄ±larÄ±nÄ±n nasÄ±l arÅŸivlendiÄŸini gÃ¶sterir. GÃ¼ncel benchmark sonuÃ§larÄ± 100 tekrar Ã¼zerinden Ã¼retilmiÅŸtir ve esas alÄ±nmasÄ± gereken CSV dosyalar `results/` altÄ±ndadÄ±r.
+Bu bölümdeki referanslar, geçmiş benchmark çıktılarının nasıl arşivlendiğini gösterir. Güncel benchmark sonuçları 100 tekrar üzerinden üretilmiştir ve esas alınması gereken CSV dosyalar `results/` altındadır.
 
-## SonuÃ§ DosyalarÄ±
+## Sonuç Dosyaları
 
-`results/` klasÃ¶rÃ¼ benchmark Ã§Ä±ktÄ±larÄ±nÄ±n toplandÄ±ÄŸÄ± yerdir.
+`results/` klasörü benchmark çıktılarının toplandığı yerdir.
 
-- `results/playwright/playwright_benchmark_100.csv`: Playwright iÃ§in ham tekrar Ã¶lÃ§Ã¼mleri
-- `results/cypress/cypress_benchmark_100.csv`: Cypress iÃ§in ham tekrar Ã¶lÃ§Ã¼mleri
-- `results/summaries/benchmark_summary_100.csv`: iki aracÄ±n karÅŸÄ±laÅŸtÄ±rmalÄ± Ã¶zeti
-- `results/thesis_stats_report_100.md`: tez iÃ§in hazÄ±rlanmÄ±ÅŸ analiz raporu
+- `results/playwright/playwright_benchmark_100.csv`: Playwright için ham tekrar ölçümleri
+
+- `results/cypress/cypress_benchmark_100.csv`: Cypress için ham tekrar ölçümleri
+
+- `results/summaries/benchmark_summary_100.csv`: iki aracın karşılaştırmalı özeti
+
+- `results/thesis_stats_report_100.md`: tez için hazırlanmış analiz raporu
+
 - `results/playwright/baseline_benchmark_100.csv`: baseline ham ölçümleri
+
 - `results/playwright/ui-heavy_benchmark_100.csv`: UI-heavy ham ölçümleri
+
 - `results/playwright/cpu-heavy_benchmark_100.csv`: CPU-heavy ham ölçümleri
+
 - `results/playwright/ram-heavy_benchmark_100.csv`: RAM-heavy ham ölçümleri
+
 - `results/cypress/baseline_benchmark_100.csv`: baseline ham ölçümleri
+
 - `results/cypress/ui-heavy_benchmark_100.csv`: UI-heavy ham ölçümleri
+
 - `results/cypress/cpu-heavy_benchmark_100.csv`: CPU-heavy ham ölçümleri
+
 - `results/cypress/ram-heavy_benchmark_100.csv`: RAM-heavy ham ölçümleri
+
 - `results/summaries/profile_metric_summary.csv`: tool/profile/metric bazlı genel özet
+
 - `results/summaries/profile_comparison_stats.csv`: profil bazlı karşılaştırma istatistikleri
+
 - `results/profile_thesis_report_100.md`: profil bazlı tez raporu
+
 - `results/graphs/`: profil ve metrik bazlı grafikler
 
-Ã–zet CSVâ€™den gÃ¶rÃ¼len temel metrikler:
+Özet CSV'den görünen temel metrikler:
 
-- Playwright: 100/100 baÅŸarÄ±lÄ±, ortalama sÃ¼re 4.0135 sn, ortalama CPU 107.7352 %, ortalama bellek 373.7757 MB
-- Cypress: 100/100 baÅŸarÄ±lÄ±, ortalama sÃ¼re 13.8553 sn, ortalama CPU 143.7743 %, ortalama bellek 957.4314 MB
+- Playwright: 100/100 başarılı, ortalama süre 4.0135 sn, ortalama CPU 107.7352 %, ortalama bellek 373.7757 MB
 
-## Profil LaboratuvarÄ±
+- Cypress: 100/100 başarılı, ortalama süre 13.8553 sn, ortalama CPU 143.7743 %, ortalama bellek 957.4314 MB
 
-Demo uygulamada baseline iÅŸlevsel kullanÄ±cÄ± akÄ±ÅŸÄ±ndan ayrÄ± olarak Ã¼Ã§ profil alanÄ± bulunur:
+## Profil Laboratuvarı
 
-- UI-heavy profil yapÄ±sÄ±
-- CPU-heavy profil yapÄ±sÄ±
-- RAM-heavy profil yapÄ±sÄ±
+Demo uygulamada baseline işlevsel kullanıcı akışından ayrı olarak üç profil alanı bulunur:
 
-Bu profiller test edilebilir `data-testid` seÃ§icileri ile birlikte gelir ve baseline benchmark sonuÃ§larÄ±nÄ± deÄŸiÅŸtirmez. GÃ¼ncel CSV Ã¶zetleri hÃ¢lÃ¢ yalnÄ±zca baseline iÅŸlevsel kullanÄ±cÄ± akÄ±ÅŸÄ± iÃ§in geÃ§erlidir.
+- UI-heavy profil yapısı
+
+- CPU-heavy profil yapısı
+
+- RAM-heavy profil yapısı
+
+Bu profiller test edilebilir `data-testid` seçicileri ile birlikte gelir ve baseline benchmark sonuçlarını değiştirmez. Güncel CSV özetleri hâlâ yalnızca baseline işlevsel kullanıcı akışı için geçerlidir.
 
 ## Loglar ve Raporlar
 
-`docs/` klasÃ¶rÃ¼, Ã§alÄ±ÅŸmanÄ±n okunmasÄ±nÄ± kolaylaÅŸtÄ±ran destek dosyalarÄ±nÄ± iÃ§erir:
+`docs/` klasörü, çalışmanın okunmasını kolaylaştıran destek dosyalarını içerir:
 
-- `docs/cypress-test-output.txt`: Cypress test Ã§Ä±ktÄ±sÄ±
-- `docs/playwright-test-output.txt`: Playwright test Ã§Ä±ktÄ±sÄ±
-- `docs/cypress-benchmark-100.log`: Cypress benchmark kayÄ±tlarÄ±
-- `docs/playwright-benchmark-100.log`: Playwright benchmark kayÄ±tlarÄ±
-- `docs/test-log.md`: Ã§alÄ±ÅŸmanÄ±n kÄ±sa operasyonel Ã¶zeti
+- `docs/cypress-test-output.txt`: Cypress test çıktısı
 
-Bu dosyalar, yalnÄ±zca sonuÃ§larÄ± deÄŸil, sonucun nasÄ±l oluÅŸtuÄŸunu da takip etmeyi kolaylaÅŸtÄ±rÄ±r.
+- `docs/playwright-test-output.txt`: Playwright test çıktısı
+
+- `docs/cypress-benchmark-100.log`: Cypress benchmark kayıtları
+
+- `docs/playwright-benchmark-100.log`: Playwright benchmark kayıtları
+
+- `docs/test-log.md`: çalışmanın kısa operasyonel özeti
+
+Bu dosyalar, yalnızca sonuçları değil, sonucun nasıl oluştuğunu da takip etmeyi kolaylaştırır.
 
 ## Kurulum
 
-Projeyi Ã§alÄ±ÅŸtÄ±rmak iÃ§in Node.js tabanlÄ± baÄŸÄ±mlÄ±lÄ±klarÄ±n kurulmasÄ± gerekir:
+Projeyi çalıştırmak için Node.js tabanlı bağımlılıkların kurulması gerekir:
 
 ```bash
+
 npm install
+
 ```
 
-Playwright tarafÄ±nda tarayÄ±cÄ±larÄ±n ayrÄ±ca kurulmasÄ± gerekiyorsa:
+Playwright tarafında tarayıcıların ayrıca kurulması gerekiyorsa:
 
 ```bash
+
 npx playwright install
+
 ```
 
-## Ã‡alÄ±ÅŸtÄ±rma
+## Çalıştırma
 
 ### Playwright testi
 
 ```bash
+
 npm run test:playwright
+
 ```
 
 ### Cypress testi
 
 ```bash
+
 npm run test:cypress
+
 ```
 
-### Profil BazlÄ± Test KomutlarÄ±
+### Profil Bazlı Test Komutları
 
 Playwright:
 
 ```bash
+
 npm run test:playwright:baseline
+
 npm run test:playwright:ui-heavy
+
 npm run test:playwright:cpu-heavy
+
 npm run test:playwright:ram-heavy
+
 ```
 
 Cypress:
 
 ```bash
+
 npm run test:cypress:baseline
+
 npm run test:cypress:ui-heavy
+
 npm run test:cypress:cpu-heavy
+
 npm run test:cypress:ram-heavy
+
 ```
 
-## Benchmark Ãœretimi
+## Benchmark Üretimi
 
-Benchmark ve Ã¶zet raporlar `scripts/` klasÃ¶rÃ¼ndeki Python scriptleri ile Ã¼retilir:
+Benchmark ve özet raporlar `scripts/` klasöründeki Python scriptleri ile üretilir:
 
 - `scripts/benchmark.py`
+
 - `scripts/summarize_results.py`
+
 - `scripts/run-cypress.js`
+
 - `scripts/analyze_stats_for_thesis.py`
 
-Profil bazlÄ± Ã¶zet, karÅŸÄ±laÅŸtÄ±rma ve grafik Ã¼retimi iÃ§in:
+Profil bazlı özet, karşılaştırma ve grafik üretimi için:
 
 ```bash
+
 npm run analyze:profiles
+
 ```
 
-Bu analiz, `results/{tool}/{profile}_benchmark_100.csv` dosyalarÄ±nÄ± okuyarak `results/summaries/profile_metric_summary.csv`, `results/summaries/profile_comparison_stats.csv` ve `results/graphs/` altÄ±nda profil bazlÄ± Ã§Ä±ktÄ±lar Ã¼retir.
+Bu analiz, `results/{tool}/{profile}_benchmark_100.csv` dosyalarını okuyarak `results/summaries/profile_metric_summary.csv`, `results/summaries/profile_comparison_stats.csv` ve `results/graphs/` altında profil bazlı çıktılar üretir.
 
-Profil bazlÄ± benchmark koÅŸularÄ±nÄ± tek seferde Ã¼retmek iÃ§in:
+Profil bazlı benchmark koşullarını tek seferde üretmek için:
 
 ```bash
+
 npm run benchmark:all
+
 ```
 
-Bu komut, Playwright ve Cypress iÃ§in `baseline`, `ui-heavy`, `cpu-heavy` ve `ram-heavy` profillerinin tamamÄ±nÄ± 100 tekrar Ã§alÄ±ÅŸtÄ±rÄ±r ve Ã§Ä±ktÄ±larÄ± `results/{tool}/{profile}_benchmark_100.csv` biÃ§iminde yazar.
+Bu komut, Playwright ve Cypress için `baseline`, `ui-heavy`, `cpu-heavy` ve `ram-heavy` profillerinin tamamını 100 tekrar çalıştırır ve çıktıları `results/{tool}/{profile}_benchmark_100.csv` biçiminde yazar.
 
-Ã–zet oluÅŸturma mantÄ±ÄŸÄ±, ham CSV dosyalarÄ±nÄ± okuyup baÅŸarÄ± sayÄ±sÄ±, sÃ¼re ortalamasÄ±, CPU ortalamasÄ± ve bellek istatistiklerini tek bir karÅŸÄ±laÅŸtÄ±rma tablosuna dÃ¶nÃ¼ÅŸtÃ¼rmektir.
+Özet oluşturma mantığı, ham CSV dosyalarını okuyup başarı sayısı, süre ortalaması, CPU ortalaması ve bellek istatistiklerini tek bir karşılaştırma tablosuna dönüştürmektir.
 
-## Raporun YorumlanmasÄ±
+## Raporun Yorumlanması
 
-Bu Ã§alÄ±ÅŸmada iki noktaya Ã¶zellikle dikkat etmek gerekir:
+Bu çalışmada iki noktaya özellikle dikkat etmek gerekir:
 
-1. **BaÅŸarÄ± oranÄ± eÅŸit**: Her iki araÃ§ da 100 denemenin 100â€™Ã¼nÃ¼ baÅŸarÄ±yla tamamlamÄ±ÅŸtÄ±r.
-2. **Kaynak kullanÄ±mÄ± farklÄ±**: AynÄ± akÄ±ÅŸta Cypress, Playwrightâ€™a gÃ¶re daha uzun sÃ¼rmÃ¼ÅŸ ve daha fazla bellek tÃ¼ketmiÅŸtir.
+1. **Başarı oranı eşit**: Her iki araç da 100 denemenin 100'ünü başarıyla tamamlamıştır.
 
-Bu nedenle bu depo, yalnÄ±zca "hangi araÃ§ daha hÄ±zlÄ±" sorusuna deÄŸil, aynÄ± zamanda "aynÄ± kullanÄ±cÄ± akÄ±ÅŸÄ±nda hangi araÃ§ daha verimli raporlanÄ±yor" sorusuna da veri saÄŸlar.
+2. **Kaynak kullanımı farklı**: Aynı akışta Cypress, Playwright'a göre daha uzun sürmüş ve daha fazla bellek tüketmiştir.
+
+Bu nedenle bu depo, yalnızca "hangi araç daha hızlı" sorusuna değil, aynı zamanda "aynı kullanıcı akışında hangi araç daha verimli raporlanıyor" sorusuna da veri sağlar.
 
 ## Not
 
-Buradaki sonuÃ§lar bu depo iÃ§indeki demo uygulama, test senaryolarÄ± ve Ã¶lÃ§Ã¼m yÃ¶ntemi iÃ§in geÃ§erlidir. GerÃ§ek projelerde uygulama karmaÅŸÄ±klÄ±ÄŸÄ±, aÄŸ gecikmesi, fixture yapÄ±sÄ± ve test mimarisi bu deÄŸerleri ciddi biÃ§imde deÄŸiÅŸtirebilir.
+Buradaki sonuçlar bu depo içindeki demo uygulama, test senaryoları ve ölçüm yöntemi için geçerlidir. Gerçek projelerde uygulama karmaşıklığı, ağ gecikmesi, fixture yapısı ve test mimarisi bu değerleri ciddi biçimde değiştirebilir.
+
+
+
+
+
+
 
 
 
